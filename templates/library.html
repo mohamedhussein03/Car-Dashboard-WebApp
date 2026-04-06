@@ -1,0 +1,36 @@
+{% extends "base.html" %}
+
+{% block title %}Icon Library{% endblock %}
+
+{% block content %}
+<section class="library-page">
+    <div class="library-header">
+        <span class="section-badge">Library</span>
+        <h1>Dashboard icon library</h1>
+        <p>Choose any icon to see what it means and what action you should take.</p>
+    </div>
+
+    <section class="icon-grid">
+        {% for icon in icons %}
+            <article class="icon-card" onclick="toggleIconDetails('{{ loop.index0 }}')">
+                <div
+                    class="icon-image"
+                    style="background-image: url('{{ url_for('static', filename='icons/' + icon.icon_filename) }}');">
+                </div>
+
+                <div class="icon-card-body">
+                    <h3>{{ icon.display_name }}</h3>
+                    <p class="icon-card-hint">Tap to view details</p>
+                </div>
+
+                <div class="icon-details" id="icon-details-{{ loop.index0 }}">
+                    <p><strong>Message:</strong> {{ icon.message }}</p>
+                    <p><strong>What to do:</strong> {{ icon.action }}</p>
+                </div>
+            </article>
+        {% endfor %}
+    </section>
+</section>
+
+<script src="{{ url_for('static', filename='js/main.js') }}"></script>
+{% endblock %}

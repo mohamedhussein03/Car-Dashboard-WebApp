@@ -1,0 +1,41 @@
+{% extends "base.html" %}
+
+{% block title %}Results{% endblock %}
+
+{% block content %}
+<section class="results-container">
+    <div class="page-intro">
+        <span class="section-badge">Results</span>
+        <h1>Detection result</h1>
+        <p>Your uploaded dashboard image was processed through the app pipeline.</p>
+    </div>
+
+    {% if image_url %}
+        <img src="{{ image_url }}" class="result-image" alt="Processed result image">
+    {% endif %}
+
+    <div class="status-box">
+        <p class="status">{{ message }}</p>
+    </div>
+
+    {% if detections %}
+        <div class="results-grid">
+            {% for d in detections %}
+                <div class="result-card">
+                    <div class="result-card-top">
+                        <h3>{{ d.display_name }}</h3>
+                        <span class="confidence-badge">{{ d.confidence }}</span>
+                    </div>
+                    <p>{{ d.message }}</p>
+                    <p><strong>Action:</strong> {{ d.action }}</p>
+                </div>
+            {% endfor %}
+        </div>
+    {% endif %}
+
+    <div class="results-actions">
+        <a href="{{ url_for('main.detect_page') }}" class="button-link">Try Another Image</a>
+        <a href="{{ url_for('main.library_page') }}" class="button-link button-link-secondary">Open Library</a>
+    </div>
+</section>
+{% endblock %}

@@ -1,0 +1,18 @@
+class_name,display_name,message,action
+
+Anti_Lock_Braking_System,Anti Lock Braking System,The anti lock braking system warning is on.,Drive carefully and get the ABS checked soon.
+Auto_Shift_Lock,Auto Shift Lock,There is an issue with the shift lock system.,Try restarting the car. If it stays on, inspect the shift lock system.
+Braking_System_Issue,Braking System Issue,There may be a problem with the braking system.,Stop driving if braking feels unsafe and inspect the brake system immediately.
+Charging_System_Issue,Charging System Issue,The charging system is not working correctly.,Check the battery and alternator as soon as possible.
+Check_Engine,Check Engine,The engine management system detected a fault.,Scan the car for fault codes and inspect the engine soon.
+Engine_Overheating_Warning,Engine Overheating Warning,The engine temperature is too high.,Stop the car safely and let the engine cool down before checking coolant.
+Fog_Lamp_Indicator,Fog Lamp Indicator,The fog lamp indicator is on.,Check whether the fog lamps were intentionally turned on.
+Lane_Departure,Lane Departure,The lane departure warning is active or reporting an issue.,Check lane assist settings and drive carefully.
+Low_Engine_Oil,Low Engine Oil,The engine oil level or pressure may be low.,Check engine oil level immediately and do not ignore this warning.
+Low_Fuel,Low Fuel,The fuel level is low.,Refuel the car as soon as possible.
+Low_Tire_Pressure,Low Tire Pressure,One or more tires may have low pressure.,Check and inflate the tires to the recommended pressure.
+Master_warning_light,Master Warning Light,The car detected an important warning that needs attention.,Check the dashboard and vehicle status for the related warning.
+Seat_Belt,Seat Belt,Seat belt reminder is active.,Fasten the seat belt securely.
+SRS_Airbag,SRS Airbag,There may be a problem with the airbag system.,Have the airbag system inspected as soon as possible.
+Traction_Control,Traction Control,The traction control system is active or has a fault.,Drive carefully and inspect the traction control system if the light stays on.
+Washer_Fluid,Washer Fluid,Washer fluid level is low.,Refill the washer fluid tank.

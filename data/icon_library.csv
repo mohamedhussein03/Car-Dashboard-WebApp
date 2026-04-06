@@ -1,0 +1,17 @@
+class_name,display_name,icon_filename
+Anti_Lock_Braking_System,Anti Lock Braking System,Anti_Lock_Braking_System.png
+Auto_Shift_Lock,Auto Shift Lock,Auto_Shift_Lock.png
+Braking_System_Issue,Braking System Issue,Braking_System_Issue.png
+Charging_System_Issue,Charging System Issue,Charging_System_Issue.png
+Check_Engine,Check Engine,Check_Engine.png
+Engine_Overheating_Warning,Engine Overheating Warning,Engine_Overheating_Warning.png
+Fog_Lamp_Indicator,Fog Lamp Indicator,Fog_Lamp_Indicator.png
+Lane_Departure,Lane Departure,Lane_Departure.png
+Low_Engine_Oil,Low Engine Oil,Low_Engine_Oil.png
+Low_Fuel,Low Fuel,Low_Fuel.png
+Low_Tire_Pressure,Low Tire Pressure,Low_Tire_Pressure.png
+Master_warning_light,Master Warning Light,Master_warning_light.png
+Seat_Belt,Seat Belt,Seat_Belt.png
+SRS_Airbag,SRS Airbag,SRS_Airbag.png
+Traction_Control,Traction Control,Traction_Control.png
+Washer_Fluid,Washer Fluid,Washer_Fluid.png

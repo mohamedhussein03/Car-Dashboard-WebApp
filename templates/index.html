@@ -1,0 +1,30 @@
+{% extends "base.html" %}
+
+{% block title %}Home{% endblock %}
+
+{% block content %}
+<section class="hero">
+    <div class="container">
+        <span class="hero-badge">AI Dashboard Assistant</span>
+        <h1>Understand your car dashboard in seconds</h1>
+        <p>
+            Upload a dashboard image for automatic warning icon detection,
+            or browse the icon library to learn what each warning means.
+        </p>
+    </div>
+</section>
+
+<section class="home-options">
+    <a href="{{ url_for('main.detect_page') }}" class="option-card">
+        <div class="option-icon">📷</div>
+        <h2>Upload Image</h2>
+        <p>Run preprocessing checks, detect dashboard icons, and get a clear action message.</p>
+    </a>
+
+    <a href="{{ url_for('main.library_page') }}" class="option-card">
+        <div class="option-icon">📚</div>
+        <h2>Icon Library</h2>
+        <p>Browse warning icons, open each one, and read what it means and what to do next.</p>
+    </a>
+</section>
+{% endblock %}

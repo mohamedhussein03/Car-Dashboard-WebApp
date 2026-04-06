@@ -1,0 +1,16 @@
+Anti_Lock_Braking_System	
+Auto_Shift_Lock	
+Braking_System_Issue	
+Charging_System_Issue	
+Check_Engine	
+Engine_Overheating_Warning	
+Fog_Lamp_Indicator	
+Lane_Departure	
+Low_Engine_Oil	
+Low_Fuel	
+Low_Tire_Pressure	
+Master_warning_light	
+Seat_Belt	
+SRS_Airbag	
+Traction_Control	
+Washer_Fluid
