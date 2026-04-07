@@ -11,24 +11,32 @@
     </div>
 
     <section class="icon-grid">
-        {% for icon in icons %}
-            <article class="icon-card" onclick="toggleIconDetails('{{ loop.index0 }}')">
-                <div
-                    class="icon-image"
-                    style="background-image: url('{{ url_for('static', filename='icons/' + icon.icon_filename) }}');">
+    {% for icon in icons %}
+        <article class="icon-card" onclick="toggleIconDetails('{{ loop.index0 }}')">
+            <div
+                class="icon-image"
+                style="background-image: url('{{ url_for('static', filename='icons/' + icon.icon_filename) }}');">
+            </div>
+
+            <div class="icon-card-body">
+                <span class="icon-chip">Dashboard Icon</span>
+                <h3>{{ icon.display_name }}</h3>
+                <p class="icon-card-hint">Click to view meaning and action</p>
+            </div>
+
+            <div class="icon-details" id="icon-details-{{ loop.index0 }}">
+                <div class="icon-details-block">
+                    <h4>Meaning</h4>
+                    <p>{{ icon.message }}</p>
                 </div>
 
-                <div class="icon-card-body">
-                    <h3>{{ icon.display_name }}</h3>
-                    <p class="icon-card-hint">Tap to view details</p>
+                <div class="icon-details-block">
+                    <h4>What to do</h4>
+                    <p>{{ icon.action }}</p>
                 </div>
-
-                <div class="icon-details" id="icon-details-{{ loop.index0 }}">
-                    <p><strong>Message:</strong> {{ icon.message }}</p>
-                    <p><strong>What to do:</strong> {{ icon.action }}</p>
-                </div>
-            </article>
-        {% endfor %}
+            </div>
+        </article>
+    {% endfor %}
     </section>
 </section>
 

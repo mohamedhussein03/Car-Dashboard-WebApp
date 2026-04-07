@@ -16,3 +16,10 @@ Seat_Belt,Seat Belt,Seat belt reminder is active.,Fasten the seat belt securely.
 SRS_Airbag,SRS Airbag,There may be a problem with the airbag system.,Have the airbag system inspected as soon as possible.
 Traction_Control,Traction Control,The traction control system is active or has a fault.,Drive carefully and inspect the traction control system if the light stays on.
 Washer_Fluid,Washer Fluid,Washer fluid level is low.,Refill the washer fluid tank.
+
+Transmission_Malfunction,Transmission Malfunction,The transmission system detected a fault.,Drive gently and have the transmission checked as soon as possible.
+Electronic_Throttle_Control,Electronic Throttle Control,The electronic throttle control system detected an issue.,Reduce speed and inspect the throttle control system soon.
+Power_Steering_Warning,Power Steering Warning,The power steering system may not be working correctly.,Steering may feel heavy. Drive carefully and inspect the system soon.
+Lamp_Out,Lamp Out,One of the vehicle exterior lights may not be working.,Check all exterior lamps and replace the failed bulb.
+automatic_stop_start_active,Automatic Stop Start Active,The automatic stop start system is active.,This is usually normal. No action is needed unless the system behaves unexpectedly.
+Immoblizer_warning,Immobilizer Warning,The immobilizer system detected a key or security issue.,Try the correct key and check the vehicle security system if the warning stays on.

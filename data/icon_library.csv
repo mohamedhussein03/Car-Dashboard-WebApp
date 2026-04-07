@@ -15,3 +15,10 @@ Seat_Belt,Seat Belt,Seat_Belt.png
 SRS_Airbag,SRS Airbag,SRS_Airbag.png
 Traction_Control,Traction Control,Traction_Control.png
 Washer_Fluid,Washer Fluid,Washer_Fluid.png
+
+Transmission_Malfunction,Transmission Malfunction,Transmission_Malfunction.png
+Electronic_Throttle_Control,Electronic Throttle Control,Electronic_Throttle_Control.png
+Power_Steering_Warning,Power Steering Warning,Power_Steering_Warning.png
+Lamp_Out,Lamp Out,Lamp_Out.png
+automatic_stop_start_active,Automatic Stop Start Active,automatic_stop_start_active.png
+Immoblizer_warning,Immobilizer Warning,Immoblizer_warning.png
