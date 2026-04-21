@@ -23,41 +23,69 @@ def allowed_file(filename):
 
 
 def run_detection_pipeline(saved_path, filename, preprocessing_result=None, bypass_warning=None):
-    detections = run_detection(str(saved_path))
+    try:
+        print("run_detection_pipeline started", flush=True)
+        print("Detection image path:", saved_path, flush=True)
 
-    if not detections:
+        print("Starting model detection", flush=True)
+        detections = run_detection(str(saved_path))
+        print("Detection complete", flush=True)
+        print("Detections count:", len(detections), flush=True)
+
+        if not detections:
+            print("No detections found", flush=True)
+            return render_template(
+                "results.html",
+                status="accepted",
+                message="Image processed, but no dashboard icons were detected.",
+                details=preprocessing_result,
+                image_url=f"/static/uploads/{filename}",
+                detections=[],
+                bypass_warning=bypass_warning,
+                show_detect_anyway=False,
+                retry_image_filename=None,
+            )
+
+        print("Attaching messages to detections", flush=True)
+        detections = attach_messages_to_detections(detections)
+        print("Messages attached", flush=True)
+
+        upload_folder = Path(current_app.config["UPLOAD_FOLDER"])
+        annotated_filename = generate_output_filename(filename, prefix="annotated")
+        annotated_path = upload_folder / annotated_filename
+
+        print("Saving annotated image to:", annotated_path, flush=True)
+        save_annotated_image(saved_path, detections, annotated_path)
+        print("Annotated image saved", flush=True)
+
+        annotated_image_url = f"/static/uploads/{annotated_filename}"
+        print("Rendering detected results page", flush=True)
+
         return render_template(
             "results.html",
-            status="accepted",
-            message="Image processed, but no dashboard icons were detected.",
+            status="detected",
+            message="Detection completed successfully.",
             details=preprocessing_result,
-            image_url=f"/static/uploads/{filename}",
-            detections=[],
+            image_url=annotated_image_url,
+            detections=detections,
             bypass_warning=bypass_warning,
             show_detect_anyway=False,
             retry_image_filename=None,
         )
 
-    detections = attach_messages_to_detections(detections)
-
-    upload_folder = Path(current_app.config["UPLOAD_FOLDER"])
-    annotated_filename = generate_output_filename(filename, prefix="annotated")
-    annotated_path = upload_folder / annotated_filename
-    save_annotated_image(saved_path, detections, annotated_path)
-
-    annotated_image_url = f"/static/uploads/{annotated_filename}"
-
-    return render_template(
-        "results.html",
-        status="detected",
-        message="Detection completed successfully.",
-        details=preprocessing_result,
-        image_url=annotated_image_url,
-        detections=detections,
-        bypass_warning=bypass_warning,
-        show_detect_anyway=False,
-        retry_image_filename=None,
-    )
+    except Exception as e:
+        print("run_detection_pipeline error:", repr(e), flush=True)
+        return render_template(
+            "results.html",
+            status="error",
+            message=f"Detection pipeline failed: {str(e)}",
+            details=None,
+            image_url=f"/static/uploads/{filename}",
+            detections=[],
+            bypass_warning=None,
+            show_detect_anyway=False,
+            retry_image_filename=None,
+        )
 
 
 @main.route("/")
@@ -70,7 +98,10 @@ def detect_page():
     if request.method == "GET":
         return render_template("detect.html")
 
+    print("POST /detect reached", flush=True)
+
     if "image" not in request.files:
+        print("No image in request.files", flush=True)
         return render_template(
             "results.html",
             status="error",
@@ -84,8 +115,10 @@ def detect_page():
         )
 
     file = request.files["image"]
+    print("Uploaded filename:", file.filename, flush=True)
 
     if file.filename == "":
+        print("Empty filename received", flush=True)
         return render_template(
             "results.html",
             status="error",
@@ -99,6 +132,7 @@ def detect_page():
         )
 
     if not allowed_file(file.filename):
+        print("Unsupported file type", flush=True)
         return render_template(
             "results.html",
             status="error",
@@ -118,10 +152,16 @@ def detect_page():
     saved_path = upload_folder / filename
     file.save(saved_path)
 
+    print("Image saved at:", saved_path, flush=True)
+    print("Starting preprocessing", flush=True)
+
     preprocessing_result = run_preprocessing(str(saved_path))
+    print("Preprocessing result:", preprocessing_result, flush=True)
+
     image_url = f"/static/uploads/{filename}"
 
     if not preprocessing_result["passed"]:
+        print("Image rejected by preprocessing", flush=True)
         return render_template(
             "results.html",
             status="rejected",
@@ -133,6 +173,8 @@ def detect_page():
             show_detect_anyway=True,
             retry_image_filename=filename,
         )
+
+    print("Passing to detection pipeline", flush=True)
 
     return run_detection_pipeline(
         saved_path=saved_path,
