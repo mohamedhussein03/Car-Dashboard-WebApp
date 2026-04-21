@@ -24,6 +24,7 @@ def load_icon_library():
                 "class_name": class_name,
                 "display_name": row["display_name"].strip(),
                 "icon_filename": row["icon_filename"].strip(),
+                "category": row.get("category", "supported").strip().lower(),
                 "message": message_data["message"],
                 "action": message_data["action"],
             })

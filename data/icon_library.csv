@@ -1,24 +1,25 @@
-class_name,display_name,icon_filename
-Anti_Lock_Braking_System,Anti Lock Braking System,Anti_Lock_Braking_System.png
-Auto_Shift_Lock,Auto Shift Lock,Auto_Shift_Lock.png
-Braking_System_Issue,Braking System Issue,Braking_System_Issue.png
-Charging_System_Issue,Charging System Issue,Charging_System_Issue.png
-Check_Engine,Check Engine,Check_Engine.png
-Engine_Overheating_Warning,Engine Overheating Warning,Engine_Overheating_Warning.png
-Fog_Lamp_Indicator,Fog Lamp Indicator,Fog_Lamp_Indicator.png
-Lane_Departure,Lane Departure,Lane_Departure.png
-Low_Engine_Oil,Low Engine Oil,Low_Engine_Oil.png
-Low_Fuel,Low Fuel,Low_Fuel.png
-Low_Tire_Pressure,Low Tire Pressure,Low_Tire_Pressure.png
-Master_warning_light,Master Warning Light,Master_warning_light.png
-Seat_Belt,Seat Belt,Seat_Belt.png
-SRS_Airbag,SRS Airbag,SRS_Airbag.png
-Traction_Control,Traction Control,Traction_Control.png
-Washer_Fluid,Washer Fluid,Washer_Fluid.png
+class_name,display_name,icon_filename,category
 
-Transmission_Malfunction,Transmission Malfunction,Transmission_Malfunction.png
-Electronic_Throttle_Control,Electronic Throttle Control,Electronic_Throttle_Control.png
-Power_Steering_Warning,Power Steering Warning,Power_Steering_Warning.png
-Lamp_Out,Lamp Out,Lamp_Out.png
-automatic_stop_start_active,Automatic Stop Start Active,automatic_stop_start_active.png
-Immoblizer_warning,Immobilizer Warning,Immoblizer_warning.png
+Anti_Lock_Braking_System,Anti Lock Braking System,Anti_Lock_Braking_System.png,supported
+Auto_Shift_Lock,Auto Shift Lock,Auto_Shift_Lock.png,supported
+Braking_System_Issue,Braking System Issue,Braking_System_Issue.png,supported
+Charging_System_Issue,Charging System Issue,Charging_System_Issue.png,supported
+Check_Engine,Check Engine,Check_Engine.png,supported
+Engine_Overheating_Warning,Engine Overheating Warning,Engine_Overheating_Warning.png,supported
+Fog_Lamp_Indicator,Fog Lamp Indicator,Fog_Lamp_Indicator.png,supported
+Lane_Departure,Lane Departure,Lane_Departure.png,supported
+Low_Engine_Oil,Low Engine Oil,Low_Engine_Oil.png,supported
+Low_Fuel,Low Fuel,Low_Fuel.png,supported
+Low_Tire_Pressure,Low Tire Pressure,Low_Tire_Pressure.png,supported
+Master_warning_light,Master Warning Light,Master_warning_light.png,supported
+Seat_Belt,Seat Belt,Seat_Belt.png,supported
+SRS_Airbag,SRS Airbag,SRS_Airbag.png,supported
+Traction_Control,Traction Control,Traction_Control.png,supported
+Washer_Fluid,Washer Fluid,Washer_Fluid.png,supported
+
+Transmission_Malfunction,Transmission Malfunction,Transmission_Malfunction.png,further
+Electronic_Throttle_Control,Electronic Throttle Control,Electronic_Throttle_Control.png,further
+Power_Steering_Warning,Power Steering Warning,Power_Steering_Warning.png,further
+Lamp_Out,Lamp Out,Lamp_Out.png,further
+automatic_stop_start_active,Automatic Stop Start Active,automatic_stop_start_active.png,further
+Immoblizer_warning,Immobilizer Warning,Immoblizer_warning.png,further

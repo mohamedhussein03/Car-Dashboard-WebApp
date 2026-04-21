@@ -14,20 +14,39 @@
         <img src="{{ image_url }}" class="result-image" alt="Processed result image">
     {% endif %}
 
-    <div class="status-box">
-        <p class="status">{{ message }}</p>
+    <div class="status-box {% if status == 'rejected' %}status-box-warning{% endif %}">
+        {% if status == 'rejected' %}
+            <div class="warning-message">
+                <span class="warning-icon">⚠</span>
+                <p class="status status-warning">{{ message }}</p>
+            </div>
+        {% else %}
+            <p class="status">{{ message }}</p>
+        {% endif %}
     </div>
 
     {% if detections %}
         <div class="results-grid">
             {% for d in detections %}
-                <div class="result-card">
-                    <div class="result-card-top">
-                        <h3>{{ d.display_name }}</h3>
-                        <span class="confidence-badge">{{ d.confidence }}</span>
+                <div class="result-card result-card-with-icon">
+                    <div class="result-icon-box">
+                        {% if d.icon_filename %}
+                            <img
+                                src="{{ url_for('static', filename='icons/' + d.icon_filename) }}"
+                                alt="{{ d.display_name }}"
+                                class="result-icon-image"
+                            >
+                        {% endif %}
                     </div>
-                    <p>{{ d.message }}</p>
-                    <p><strong>Action:</strong> {{ d.action }}</p>
+
+                    <div class="result-content">
+                        <div class="result-card-top">
+                            <h3>{{ d.display_name }}</h3>
+                            <span class="confidence-badge">{{ d.confidence }}</span>
+                        </div>
+                        <p>{{ d.message }}</p>
+                        <p><strong>Action:</strong> {{ d.action }}</p>
+                    </div>
                 </div>
             {% endfor %}
         </div>
@@ -35,7 +54,50 @@
 
     <div class="results-actions">
         <a href="{{ url_for('main.detect_page') }}" class="button-link">Try Another Image</a>
+
+        {% if show_detect_anyway and retry_image_filename %}
+            <button
+                type="button"
+                class="button-link button-link-warning"
+                onclick="openDetectAnywayModal()">
+                Detect Anyway
+            </button>
+        {% endif %}
+
         <a href="{{ url_for('main.library_page') }}" class="button-link button-link-secondary">Open Library</a>
     </div>
 </section>
+
+{% if show_detect_anyway and retry_image_filename %}
+    <div class="modal-overlay" id="detectAnywayModal" style="display:none;">
+        <div class="modal-box">
+            <div class="modal-header">
+                <span class="warning-icon">⚠</span>
+                <h3>Continue without retaking image?</h3>
+            </div>
+
+            <p class="modal-text">
+                You are choosing to continue detection without retaking the image.
+                Image quality issues, such as blur or poor lighting, may reduce detection accuracy.
+                Are you sure you want to proceed?
+            </p>
+
+            <div class="modal-actions">
+                <form action="{{ url_for('main.detect_anyway') }}" method="POST">
+                    <input type="hidden" name="filename" value="{{ retry_image_filename }}">
+                    <button type="submit" class="button-link button-link-warning">Proceed</button>
+                </form>
+
+                <button
+                    type="button"
+                    class="button-link button-link-secondary"
+                    onclick="closeDetectAnywayModal()">
+                    Cancel
+                </button>
+            </div>
+        </div>
+    </div>
+{% endif %}
+
+<script src="{{ url_for('static', filename='js/main.js') }}"></script>
 {% endblock %}

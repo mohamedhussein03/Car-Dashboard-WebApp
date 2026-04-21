@@ -5,15 +5,15 @@ import numpy as np
 # =========================
 # BLUR THRESHOLD
 # =========================
-BLUR_THRESHOLD = 225
+BLUR_THRESHOLD = 95
 
 
 # =========================
 # LIGHTING THRESHOLDS
 # =========================
-MIN_BRIGHTNESS = 84.059719
-MAX_CONTRAST = 49.112041
-MAX_GLARE_RATIO = 0.009866
+MIN_BRIGHTNESS = 72
+MAX_CONTRAST = 65
+MAX_GLARE_RATIO = 0.02
 
 
 # =========================

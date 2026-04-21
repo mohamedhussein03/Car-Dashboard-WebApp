@@ -3,8 +3,15 @@
 {% block title %}Home{% endblock %}
 
 {% block content %}
-<section class="hero">
-    <div class="container">
+<section class="hero hero-video">
+
+    <video autoplay muted loop playsinline class="hero-video-bg">
+        <source src="{{ url_for('static', filename='videos/background.mp4') }}" type="video/mp4">
+    </video>
+
+    <div class="hero-overlay"></div>
+
+    <div class="container hero-content">
         <span class="hero-badge">AI Dashboard Assistant</span>
         <h1>Understand your car dashboard in seconds</h1>
         <p>
@@ -12,6 +19,7 @@
             or browse the icon library to learn what each warning means.
         </p>
     </div>
+
 </section>
 
 <section class="home-options">

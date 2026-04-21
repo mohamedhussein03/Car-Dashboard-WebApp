@@ -10,34 +10,133 @@
         <p>Choose any icon to see what it means and what action you should take.</p>
     </div>
 
-    <section class="icon-grid">
-    {% for icon in icons %}
-        <article class="icon-card" onclick="toggleIconDetails('{{ loop.index0 }}')">
-            <div
-                class="icon-image"
-                style="background-image: url('{{ url_for('static', filename='icons/' + icon.icon_filename) }}');">
-            </div>
+    <section class="library-section">
+        <div class="library-ribbon">
+            <span>Supported 16 Icons</span>
+        </div>
 
-            <div class="icon-card-body">
-                <span class="icon-chip">Dashboard Icon</span>
-                <h3>{{ icon.display_name }}</h3>
-                <p class="icon-card-hint">Click to view meaning and action</p>
-            </div>
+        <section class="icon-grid">
+            {% for icon in supported_icons %}
+                <article class="icon-card" onclick="toggleIconDetails('supported-{{ loop.index0 }}')">
+                    <div
+                        class="icon-image"
+                        style="background-image: url('{{ url_for('static', filename='icons/' + icon.icon_filename) }}');">
+                    </div>
 
-            <div class="icon-details" id="icon-details-{{ loop.index0 }}">
-                <div class="icon-details-block">
-                    <h4>Meaning</h4>
-                    <p>{{ icon.message }}</p>
-                </div>
+                    <div class="icon-card-body">
+                        <span class="icon-chip">Dashboard Icon</span>
+                        <h3>{{ icon.display_name }}</h3>
+                        <p class="icon-card-hint">Click to view meaning and action</p>
+                    </div>
 
-                <div class="icon-details-block">
-                    <h4>What to do</h4>
-                    <p>{{ icon.action }}</p>
-                </div>
-            </div>
-        </article>
-    {% endfor %}
+                    <div class="icon-details" id="icon-details-supported-{{ loop.index0 }}">
+                        <div class="icon-details-block">
+                            <h4>Meaning</h4>
+                            <p>{{ icon.message }}</p>
+                        </div>
+
+                        <div class="icon-details-block">
+                            <h4>What to do</h4>
+                            <p>{{ icon.action }}</p>
+                        </div>
+                    </div>
+                </article>
+            {% endfor %}
+        </section>
     </section>
+
+    <section class="library-section">
+        <div class="library-ribbon">
+            <span>Further Icons</span>
+        </div>
+
+        <section class="icon-grid">
+            {% for icon in further_icons %}
+                <article class="icon-card" onclick="toggleIconDetails('further-{{ loop.index0 }}')">
+                    <div
+                        class="icon-image"
+                        style="background-image: url('{{ url_for('static', filename='icons/' + icon.icon_filename) }}');">
+                    </div>
+
+                    <div class="icon-card-body">
+                        <span class="icon-chip">Dashboard Icon</span>
+                        <h3>{{ icon.display_name }}</h3>
+                        <p class="icon-card-hint">Click to view meaning and action</p>
+                    </div>
+
+                    <div class="icon-details" id="icon-details-further-{{ loop.index0 }}">
+                        <div class="icon-details-block">
+                            <h4>Meaning</h4>
+                            <p>{{ icon.message }}</p>
+                        </div>
+
+                        <div class="icon-details-block">
+                            <h4>What to do</h4>
+                            <p>{{ icon.action }}</p>
+                        </div>
+                    </div>
+                </article>
+            {% endfor %}
+        </section>
+    </section>
+
+    <section class="library-contact">
+    <h2>Missing an icon?</h2>
+    <p>Send us a request and we will review it for a future update.</p>
+
+    <button
+        type="button"
+        class="button-link"
+        onclick="openIconRequestModal()">
+        Contact to Add New Icons
+    </button>
+
+    {% if request_message %}
+        <div class="request-message {% if request_status == 'success' %}request-message-success{% else %}request-message-error{% endif %}">
+            {{ request_message }}
+        </div>
+    {% endif %}
+</section>
+
+<div class="modal-overlay" id="iconRequestModal" style="display:none;">
+    <div class="modal-box">
+        <div class="modal-header">
+            <h3>Request a New Dashboard Icon</h3>
+        </div>
+
+        <form
+            action="{{ url_for('main.submit_icon_request') }}"
+            method="POST"
+            enctype="multipart/form-data"
+            class="icon-request-form">
+
+            <label for="requestName">Name</label>
+            <input type="text" id="requestName" name="name" required>
+
+            <label for="requestEmail">Email</label>
+            <input type="email" id="requestEmail" name="email" required>
+
+            <label for="requestIconName">Icon Name</label>
+            <input type="text" id="requestIconName" name="icon_name">
+
+            <label for="requestImage">Icon Image</label>
+            <input type="file" id="requestImage" name="icon_image" accept=".png,.jpg,.jpeg,.webp">
+
+            <label for="requestNotes">Notes</label>
+            <textarea id="requestNotes" name="notes" rows="4"></textarea>
+
+            <div class="modal-actions">
+                <button type="submit" class="button-link">Submit Request</button>
+                <button
+                    type="button"
+                    class="button-link button-link-secondary"
+                    onclick="closeIconRequestModal()">
+                    Cancel
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
 </section>
 
 <script src="{{ url_for('static', filename='js/main.js') }}"></script>

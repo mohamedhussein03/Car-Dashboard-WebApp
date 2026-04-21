@@ -1,0 +1,22 @@
+# Python
+__pycache__/
+*.pyc
+*.pyo
+
+# Virtual environment
+venv/
+.env/
+
+# Flask uploads and runtime files
+static/uploads/
+static/suggestions/
+
+# OS / Editor
+.vscode/
+.DS_Store
+
+# Logs
+*.log
+
+# Large model (handle separately)
+model/best.pt

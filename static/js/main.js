@@ -46,3 +46,45 @@ if (detectForm && loadingOverlay && submitButton) {
         submitButton.textContent = "Processing...";
     });
 }
+
+function openDetectAnywayModal() {
+    const modal = document.getElementById("detectAnywayModal");
+    if (modal) {
+        modal.style.display = "flex";
+    }
+}
+
+function closeDetectAnywayModal() {
+    const modal = document.getElementById("detectAnywayModal");
+    if (modal) {
+        modal.style.display = "none";
+    }
+}
+
+window.addEventListener("click", function (event) {
+    const modal = document.getElementById("detectAnywayModal");
+    if (modal && event.target === modal) {
+        modal.style.display = "none";
+    }
+});
+
+function openIconRequestModal() {
+    const modal = document.getElementById("iconRequestModal");
+    if (modal) {
+        modal.style.display = "flex";
+    }
+}
+
+function closeIconRequestModal() {
+    const modal = document.getElementById("iconRequestModal");
+    if (modal) {
+        modal.style.display = "none";
+    }
+}
+
+window.addEventListener("click", function (event) {
+    const iconRequestModal = document.getElementById("iconRequestModal");
+    if (iconRequestModal && event.target === iconRequestModal) {
+        iconRequestModal.style.display = "none";
+    }
+});

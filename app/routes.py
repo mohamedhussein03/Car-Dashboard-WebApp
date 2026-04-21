@@ -9,6 +9,7 @@ from app.services.message_service import attach_messages_to_detections
 from app.services.preprocessing import run_preprocessing
 from app.utils.file_helpers import generate_output_filename
 
+from app.services.icon_request_service import save_icon_request
 
 main = Blueprint("main", __name__)
 
@@ -19,6 +20,44 @@ def allowed_file(filename):
 
     extension = filename.rsplit(".", 1)[1].lower()
     return extension in {"png", "jpg", "jpeg", "webp"}
+
+
+def run_detection_pipeline(saved_path, filename, preprocessing_result=None, bypass_warning=None):
+    detections = run_detection(str(saved_path))
+
+    if not detections:
+        return render_template(
+            "results.html",
+            status="accepted",
+            message="Image processed, but no dashboard icons were detected.",
+            details=preprocessing_result,
+            image_url=f"/static/uploads/{filename}",
+            detections=[],
+            bypass_warning=bypass_warning,
+            show_detect_anyway=False,
+            retry_image_filename=None,
+        )
+
+    detections = attach_messages_to_detections(detections)
+
+    upload_folder = Path(current_app.config["UPLOAD_FOLDER"])
+    annotated_filename = generate_output_filename(filename, prefix="annotated")
+    annotated_path = upload_folder / annotated_filename
+    save_annotated_image(saved_path, detections, annotated_path)
+
+    annotated_image_url = f"/static/uploads/{annotated_filename}"
+
+    return render_template(
+        "results.html",
+        status="detected",
+        message="Detection completed successfully.",
+        details=preprocessing_result,
+        image_url=annotated_image_url,
+        detections=detections,
+        bypass_warning=bypass_warning,
+        show_detect_anyway=False,
+        retry_image_filename=None,
+    )
 
 
 @main.route("/")
@@ -39,6 +78,9 @@ def detect_page():
             details=None,
             image_url=None,
             detections=[],
+            bypass_warning=None,
+            show_detect_anyway=False,
+            retry_image_filename=None,
         )
 
     file = request.files["image"]
@@ -51,6 +93,9 @@ def detect_page():
             details=None,
             image_url=None,
             detections=[],
+            bypass_warning=None,
+            show_detect_anyway=False,
+            retry_image_filename=None,
         )
 
     if not allowed_file(file.filename):
@@ -61,6 +106,9 @@ def detect_page():
             details=None,
             image_url=None,
             detections=[],
+            bypass_warning=None,
+            show_detect_anyway=False,
+            retry_image_filename=None,
         )
 
     filename = secure_filename(file.filename)
@@ -81,44 +129,115 @@ def detect_page():
             details=preprocessing_result,
             image_url=image_url,
             detections=[],
+            bypass_warning=None,
+            show_detect_anyway=True,
+            retry_image_filename=filename,
         )
 
-    detections = run_detection(str(saved_path))
+    return run_detection_pipeline(
+        saved_path=saved_path,
+        filename=filename,
+        preprocessing_result=preprocessing_result,
+        bypass_warning=None,
+    )
 
-    if not detections:
+
+@main.route("/detect-anyway", methods=["POST"])
+def detect_anyway():
+    filename = request.form.get("filename", "").strip()
+
+    if not filename:
         return render_template(
             "results.html",
-            status="accepted",
-            message="Image passed preprocessing, but no dashboard icons were detected.",
-            details=preprocessing_result,
-            image_url=image_url,
+            status="error",
+            message="No image was found for retry.",
+            details=None,
+            image_url=None,
             detections=[],
+            bypass_warning=None,
+            show_detect_anyway=False,
+            retry_image_filename=None,
         )
 
-    detections = attach_messages_to_detections(detections)
+    upload_folder = Path(current_app.config["UPLOAD_FOLDER"])
+    saved_path = upload_folder / filename
 
-    annotated_filename = generate_output_filename(filename, prefix="annotated")
-    annotated_path = upload_folder / annotated_filename
-    save_annotated_image(saved_path, detections, annotated_path)
+    if not saved_path.exists():
+        return render_template(
+            "results.html",
+            status="error",
+            message="The uploaded image could not be found. Please upload it again.",
+            details=None,
+            image_url=None,
+            detections=[],
+            bypass_warning=None,
+            show_detect_anyway=False,
+            retry_image_filename=None,
+        )
 
-    annotated_image_url = f"/static/uploads/{annotated_filename}"
+    bypass_warning = (
+        "You chose to continue detection without retaking the image. "
+        "Image quality issues such as blur or poor lighting may reduce detection accuracy."
+    )
 
-    return render_template(
-        "results.html",
-        status="detected",
-        message="Detection completed successfully.",
-        details=preprocessing_result,
-        image_url=annotated_image_url,
-        detections=detections,
+    return run_detection_pipeline(
+        saved_path=saved_path,
+        filename=filename,
+        preprocessing_result=None,
+        bypass_warning=bypass_warning,
     )
 
 
 @main.route("/library")
 def library_page():
     icons = load_icon_library()
-    return render_template("library.html", icons=icons)
+    supported_icons = [icon for icon in icons if icon["category"] == "supported"]
+    further_icons = [icon for icon in icons if icon["category"] == "further"]
+
+    return render_template(
+        "library.html",
+        supported_icons=supported_icons,
+        further_icons=further_icons,
+    )
 
 
 @main.route("/results")
 def results_page():
     return render_template("results.html")
+
+@main.route("/submit-icon-request", methods=["POST"])
+def submit_icon_request():
+    name = request.form.get("name", "").strip()
+    email = request.form.get("email", "").strip()
+    icon_name = request.form.get("icon_name", "").strip()
+    notes = request.form.get("notes", "").strip()
+    image = request.files.get("icon_image")
+
+    icons = load_icon_library()
+    supported_icons = [icon for icon in icons if icon["category"] == "supported"]
+    further_icons = [icon for icon in icons if icon["category"] == "further"]
+
+    if not name or not email:
+        return render_template(
+            "library.html",
+            supported_icons=supported_icons,
+            further_icons=further_icons,
+            request_status="error",
+            request_message="Name and email are required.",
+        )
+
+    save_icon_request(
+        name=name,
+        email=email,
+        icon_name=icon_name,
+        notes=notes,
+        image_file=image,
+    )
+
+    return render_template(
+        "library.html",
+        supported_icons=supported_icons,
+        further_icons=further_icons,
+        request_status="success",
+        request_message="Your icon request was submitted successfully.",
+    )
