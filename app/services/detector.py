@@ -71,12 +71,10 @@ def run_detection(image_path, conf_threshold=0.25):
 
     results = model.predict(
     source=image_path,
-    conf=conf_threshold,
-    imgsz=320,
-    max_det=10,
+    conf=0.33,
+    imgsz=640,
     device="cpu",
     verbose=False
-
     )
 
     detections = []
