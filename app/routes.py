@@ -92,6 +92,10 @@ def run_detection_pipeline(saved_path, filename, preprocessing_result=None, bypa
 def home():
     return render_template("index.html")
 
+@main.route("/health")
+def health():
+    return "OK", 200
+
 
 @main.route("/detect", methods=["GET", "POST"])
 def detect_page():
