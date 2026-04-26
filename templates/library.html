@@ -79,24 +79,6 @@
             {% endfor %}
         </section>
     </section>
-
-    <section class="library-contact">
-        <h2>{{ _("Missing an icon?") }}</h2>
-        <p>{{ _("Send us a request and we will review it for a future update.") }}</p>
-
-        <button
-            type="button"
-            class="button-link"
-            onclick="openIconRequestModal()">
-            {{ _("Contact to Add New Icons") }}
-        </button>
-
-        {% if request_message %}
-            <div class="request-message {% if request_status == 'success' %}request-message-success{% else %}request-message-error{% endif %}">
-                {{ request_message }}
-            </div>
-        {% endif %}
-    </section>
 </section>
 
 <script src="{{ url_for('static', filename='js/main.js') }}"></script>

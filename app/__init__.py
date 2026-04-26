@@ -2,23 +2,34 @@ from flask import Flask
 from flask import render_template
 from flask import session
 from flask_babel import Babel
+from ultralytics import YOLO
 
 from config import (
-    MAX_CONTENT_LENGTH,
     BASE_DIR,
+    MAX_CONTENT_LENGTH,
+    MODEL_PATH,
     SECRET_KEY,
     STATIC_DIR,
     TEMPLATES_DIR,
     UPLOAD_FOLDER,
-    SUGGESTIONS_FOLDER,
 )
 
 
 babel = Babel()
+MODEL = None
 
 
 def get_locale():
     return session.get("language", "en")
+
+
+def initialize_model():
+    global MODEL
+
+    if MODEL is None:
+        print("Loading YOLO model at startup...", flush=True)
+        MODEL = YOLO(str(MODEL_PATH))
+        print("YOLO model loaded successfully", flush=True)
 
 
 def create_app():
@@ -41,7 +52,8 @@ def create_app():
     babel.init_app(app, locale_selector=get_locale)
 
     UPLOAD_FOLDER.mkdir(parents=True, exist_ok=True)
-    SUGGESTIONS_FOLDER.mkdir(parents=True, exist_ok=True)
+
+    initialize_model()
 
     from app.routes import main
     app.register_blueprint(main)

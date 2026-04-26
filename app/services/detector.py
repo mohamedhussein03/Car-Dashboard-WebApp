@@ -1,7 +1,6 @@
 from pathlib import Path
 
 import cv2
-from ultralytics import YOLO
 
 from config import CLASSES_PATH, MODEL_PATH
 
@@ -27,18 +26,7 @@ def load_class_names():
     return _class_names
 
 
-def get_model():
-    global _model
 
-    if _model is None:
-        model_file = Path(MODEL_PATH)
-
-        if not model_file.exists():
-            raise FileNotFoundError(f"Model file not found: {model_file}")
-
-        _model = YOLO(str(model_file))
-
-    return _model
 
 
 def draw_detections(image, detections):
@@ -66,18 +54,28 @@ def draw_detections(image, detections):
 
 
 def run_detection(image_path, conf_threshold=0.25):
-    model = get_model()
+    from app import MODEL
+
+    if MODEL is None:
+        raise RuntimeError("YOLO model was not initialized at startup.")
+
     class_names = load_class_names()
 
-    results = model.predict(
+    results = MODEL.predict(
     source=image_path,
     conf=0.33,
     imgsz=640,
+    max_det=20,
     device="cpu",
-    verbose=False
-    )
+    verbose=True,
+    )   
 
     detections = []
+
+    print("YOLO results:", results, flush=True)
+
+    for result in results:
+        print("Boxes:", result.boxes, flush=True)
 
     for result in results:
         if result.boxes is None:
@@ -94,11 +92,10 @@ def run_detection(image_path, conf_threshold=0.25):
                 "class_id": class_id,
                 "class_name": class_name,
                 "confidence": round(confidence, 4),
-                "bbox": [round(value, 2) for value in xyxy]
+                "bbox": [round(value, 2) for value in xyxy],
             })
 
     return detections
-
 
 def save_annotated_image(image_path, detections, output_path):
     image = cv2.imread(str(image_path))

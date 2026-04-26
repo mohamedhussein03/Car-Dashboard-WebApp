@@ -9,8 +9,6 @@ from app.services.message_service import attach_messages_to_detections
 from app.services.preprocessing import run_preprocessing
 from app.utils.file_helpers import generate_output_filename
 
-from app.services.icon_request_service import save_icon_request
-
 main = Blueprint("main", __name__)
 
 
@@ -258,39 +256,3 @@ def library_page():
 def results_page():
     return render_template("results.html")
 
-@main.route("/submit-icon-request", methods=["POST"])
-def submit_icon_request():
-    name = request.form.get("name", "").strip()
-    email = request.form.get("email", "").strip()
-    icon_name = request.form.get("icon_name", "").strip()
-    notes = request.form.get("notes", "").strip()
-    image = request.files.get("icon_image")
-
-    icons = load_icon_library()
-    supported_icons = [icon for icon in icons if icon["category"] == "supported"]
-    further_icons = [icon for icon in icons if icon["category"] == "further"]
-
-    if not name or not email:
-        return render_template(
-            "library.html",
-            supported_icons=supported_icons,
-            further_icons=further_icons,
-            request_status="error",
-            request_message="Name and email are required.",
-        )
-
-    save_icon_request(
-        name=name,
-        email=email,
-        icon_name=icon_name,
-        notes=notes,
-        image_file=image,
-    )
-
-    return render_template(
-        "library.html",
-        supported_icons=supported_icons,
-        further_icons=further_icons,
-        request_status="success",
-        request_message="Your icon request was submitted successfully.",
-    )

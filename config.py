@@ -19,8 +19,5 @@ ICON_LIBRARY_CSV = DATA_DIR / "icon_library.csv"
 ALLOWED_EXTENSIONS = {"png", "jpg", "jpeg", "webp"}
 MAX_CONTENT_LENGTH = 30 * 1024 * 1024
 
-SUGGESTIONS_FOLDER = STATIC_DIR / "suggestions"
-ICON_REQUESTS_CSV = DATA_DIR / "icon_requests.csv"
-
 
 SECRET_KEY = os.getenv("SECRET_KEY", "dev-secret-key")
