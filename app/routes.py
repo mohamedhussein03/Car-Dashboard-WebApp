@@ -1,6 +1,6 @@
 from pathlib import Path
 
-from flask import Blueprint, current_app, render_template, request
+from flask import Blueprint, current_app, render_template, request, session, redirect
 from werkzeug.utils import secure_filename
 
 from app.services.detector import run_detection, save_annotated_image
@@ -95,6 +95,13 @@ def home():
 @main.route("/health")
 def health():
     return "OK", 200
+
+@main.route("/set-language/<language>")
+def set_language(language):
+    if language in current_app.config["LANGUAGES"]:
+        session["language"] = language
+
+    return redirect(request.referrer or "/")
 
 
 @main.route("/detect", methods=["GET", "POST"])

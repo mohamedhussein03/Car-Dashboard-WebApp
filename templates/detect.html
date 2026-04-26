@@ -1,20 +1,19 @@
 {% extends "base.html" %}
 
-{% block title %}Detect{% endblock %}
+{% block title %}{{ _("Detect") }}{% endblock %}
 
 {% block content %}
 <section class="detect-container">
     <div class="page-intro">
-        <span class="section-badge">Detection</span>
-        <h1>Upload or capture a dashboard image</h1>
+        <span class="section-badge">{{ _("Detection") }}</span>
+        <h1>{{ _("Upload or capture a dashboard image") }}</h1>
         <p>
-            The image will pass through lighting and blur checks first.
-            If it passes, the model will detect dashboard warning icons.
+            {{ _("The image will pass through lighting and blur checks first. If it passes, the model will detect dashboard warning icons.") }}
         </p>
     </div>
 
     <form action="/detect" method="POST" enctype="multipart/form-data" class="upload-form" id="detectForm">
-        <label for="imageInput" class="upload-label">Choose dashboard image</label>
+        <label for="imageInput" class="upload-label">{{ _("Choose dashboard image") }}</label>
 
         <input
             type="file"
@@ -25,16 +24,16 @@
         >
 
         <div class="preview-container">
-            <img id="previewImage" class="preview-image" style="display:none;" alt="Image preview">
+            <img id="previewImage" class="preview-image" style="display:none;" alt="{{ _('Image preview') }}">
         </div>
 
-        <button type="submit" id="submitButton">Analyze Image</button>
+        <button type="submit" id="submitButton">{{ _("Analyze Image") }}</button>
     </form>
 
     <div class="loading-overlay" id="loadingOverlay" style="display:none;">
         <div class="spinner-box">
             <div class="spinner"></div>
-            <p>Processing image, please wait...</p>
+            <p>{{ _("Processing image, please wait...") }}</p>
         </div>
     </div>
 </section>

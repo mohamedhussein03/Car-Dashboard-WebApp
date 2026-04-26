@@ -1,14 +1,24 @@
 from flask import Flask
 from flask import render_template
+from flask import session
+from flask_babel import Babel
 
 from config import (
     MAX_CONTENT_LENGTH,
+    BASE_DIR,
     SECRET_KEY,
     STATIC_DIR,
     TEMPLATES_DIR,
     UPLOAD_FOLDER,
     SUGGESTIONS_FOLDER,
 )
+
+
+babel = Babel()
+
+
+def get_locale():
+    return session.get("language", "en")
 
 
 def create_app():
@@ -21,6 +31,14 @@ def create_app():
     app.config["SECRET_KEY"] = SECRET_KEY
     app.config["MAX_CONTENT_LENGTH"] = MAX_CONTENT_LENGTH
     app.config["UPLOAD_FOLDER"] = str(UPLOAD_FOLDER)
+    app.config["BABEL_DEFAULT_LOCALE"] = "en"
+    app.config["BABEL_TRANSLATION_DIRECTORIES"] = str(BASE_DIR / "translations")
+    app.config["LANGUAGES"] = {
+        "en": "English",
+        "ar": "العربية",
+    }
+
+    babel.init_app(app, locale_selector=get_locale)
 
     UPLOAD_FOLDER.mkdir(parents=True, exist_ok=True)
     SUGGESTIONS_FOLDER.mkdir(parents=True, exist_ok=True)

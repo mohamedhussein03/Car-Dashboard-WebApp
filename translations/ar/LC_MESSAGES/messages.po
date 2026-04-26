@@ -1,0 +1,174 @@
+# Arabic translations for PROJECT.
+# Copyright (C) 2026 ORGANIZATION
+# This file is distributed under the same license as the PROJECT project.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2026.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: PROJECT VERSION\n"
+"Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
+"POT-Creation-Date: 2026-04-26 18:23+0300\n"
+"PO-Revision-Date: 2026-04-26 18:24+0300\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language: ar\n"
+"Language-Team: ar <LL@li.org>\n"
+"Plural-Forms: nplurals=6; plural=(n==0 ? 0 : n==1 ? 1 : n==2 ? 2 : "
+"n%100>=3 && n%100<=10 ? 3 : n%100>=0 && n%100<=2 ? 4 : 5);\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.18.0\n"
+
+#: templates/base.html:6
+msgid "Dashboard AI"
+msgstr "ذكاء لوحة القيادة"
+
+#: templates/base.html:18 templates/index.html:3
+msgid "Home"
+msgstr "الرئيسية"
+
+#: templates/base.html:19 templates/detect.html:3
+msgid "Detect"
+msgstr "الكشف"
+
+#: templates/base.html:20 templates/library.html:8
+msgid "Library"
+msgstr "المكتبة"
+
+#: templates/detect.html:8
+msgid "Detection"
+msgstr "الكشف"
+
+#: templates/detect.html:9
+msgid "Upload or capture a dashboard image"
+msgstr "ارفع أو التقط صورة للوحة القيادة"
+
+#: templates/detect.html:11
+msgid ""
+"The image will pass through lighting and blur checks first. If it passes,"
+" the model will detect dashboard warning icons."
+msgstr ""
+"ستمر الصورة أولا بفحص الإضاءة والضبابية. إذا نجحت، سيكشف النموذج رموز "
+"التحذير في لوحة القيادة."
+
+#: templates/detect.html:16
+msgid "Choose dashboard image"
+msgstr "اختر صورة لوحة القيادة"
+
+#: templates/detect.html:27
+msgid "Image preview"
+msgstr "معاينة الصورة"
+
+#: templates/detect.html:30
+msgid "Analyze Image"
+msgstr "تحليل الصورة"
+
+#: templates/detect.html:36
+msgid "Processing image, please wait..."
+msgstr "جاري معالجة الصورة، يرجى الانتظار..."
+
+#: templates/index.html:8
+msgid "AI Dashboard Assistant"
+msgstr "مساعد لوحة القيادة بالذكاء الاصطناعي"
+
+#: templates/index.html:9
+msgid "Understand your car dashboard in seconds"
+msgstr "افهم لوحة قيادة سيارتك خلال ثوان"
+
+#: templates/index.html:11
+msgid ""
+"Upload a dashboard image for automatic warning icon detection, or browse "
+"the icon library to learn what each warning means."
+msgstr ""
+"ارفع صورة للوحة القيادة للكشف التلقائي عن رموز التحذير، أو تصفح مكتبة "
+"الرموز لمعرفة معنى كل تحذير."
+
+#: templates/index.html:19
+msgid "Upload Image"
+msgstr "رفع صورة"
+
+#: templates/index.html:20
+msgid ""
+"Run preprocessing checks, detect dashboard icons, and get a clear action "
+"message."
+msgstr ""
+"شغل فحوصات المعالجة الأولية، واكشف رموز لوحة القيادة، واحصل على رسالة إجراء واضحة."
+
+#: templates/index.html:25 templates/library.html:3
+msgid "Icon Library"
+msgstr "مكتبة الرموز"
+
+#: templates/index.html:26
+msgid ""
+"Browse warning icons, open each one, and read what it means and what to "
+"do next."
+msgstr ""
+"تصفح رموز التحذير، وافتح أي رمز، واقرأ معناه وما يجب فعله بعد ذلك."
+
+#: templates/library.html:9
+msgid "Dashboard icon library"
+msgstr "مكتبة رموز لوحة القيادة"
+
+#: templates/library.html:10
+msgid "Choose any icon to see what it means and what action you should take."
+msgstr "اختر أي رمز لمعرفة معناه والإجراء الذي يجب اتخاذه."
+
+#: templates/library.html:15
+msgid "Supported Icons"
+msgstr "الرموز المدعومة"
+
+#: templates/library.html:27 templates/library.html:62
+msgid "Dashboard Icon"
+msgstr "رمز لوحة القيادة"
+
+#: templates/library.html:29 templates/library.html:64
+msgid "Click to view meaning and action"
+msgstr "اضغط لعرض المعنى والإجراء"
+
+#: templates/library.html:34 templates/library.html:69
+msgid "Meaning"
+msgstr "المعنى"
+
+#: templates/library.html:39 templates/library.html:74
+msgid "What to do"
+msgstr "ما يجب فعله"
+
+#: templates/library.html:50
+msgid "Further Icons"
+msgstr "رموز إضافية"
+
+#: templates/library.html:84
+msgid "Missing an icon?"
+msgstr "هل يوجد رمز غير موجود؟"
+
+#: templates/library.html:85
+msgid "Send us a request and we will review it for a future update."
+msgstr "أرسل لنا طلبا وسنراجعه لتحديث مستقبلي."
+
+#: templates/library.html:91
+msgid "Contact to Add New Icons"
+msgstr "تواصل لإضافة رموز جديدة"
+
+#: templates/results.html:3 templates/results.html:8
+msgid "Results"
+msgstr "النتائج"
+
+#: templates/results.html:9
+msgid "Detection result"
+msgstr "نتيجة الكشف"
+
+#: templates/results.html:10
+msgid "Your uploaded dashboard image was processed through the app pipeline."
+msgstr "تمت معالجة صورة لوحة القيادة التي رفعتها عبر مسار التطبيق."
+
+#: templates/results.html:48
+msgid "Action"
+msgstr "الإجراء"
+
+#: templates/results.html:56
+msgid "Try Another Image"
+msgstr "تجربة صورة أخرى"
+
+#: templates/results.html:58
+msgid "Open Library"
+msgstr "فتح المكتبة"

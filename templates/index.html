@@ -1,15 +1,20 @@
 {% extends "base.html" %}
 
-{% block title %}Home{% endblock %}
+{% block title %}{{ _("Home") }}{% endblock %}
 
 {% block content %}
-<section class="hero">
-    <div class="container">
-        <span class="hero-badge">AI Dashboard Assistant</span>
-        <h1>Understand your car dashboard in seconds</h1>
+<section class="hero hero-video">
+    <video class="hero-bg-video" autoplay muted loop playsinline>
+        <source src="{{ url_for('static', filename='background.mp4') }}" type="video/mp4">
+    </video>
+
+    <div class="hero-overlay"></div>
+
+    <div class="container hero-content">
+        <span class="hero-badge">{{ _("AI Dashboard Assistant") }}</span>
+        <h1>{{ _("Understand your car dashboard in seconds") }}</h1>
         <p>
-            Upload a dashboard image for automatic warning icon detection,
-            or browse the icon library to learn what each warning means.
+            {{ _("Upload a dashboard image for automatic warning icon detection, or browse the icon library to learn what each warning means.") }}
         </p>
     </div>
 </section>
@@ -17,14 +22,14 @@
 <section class="home-options">
     <a href="{{ url_for('main.detect_page') }}" class="option-card">
         <div class="option-icon">📷</div>
-        <h2>Upload Image</h2>
-        <p>Run preprocessing checks, detect dashboard icons, and get a clear action message.</p>
+        <h2>{{ _("Upload Image") }}</h2>
+        <p>{{ _("Run preprocessing checks, detect dashboard icons, and get a clear action message.") }}</p>
     </a>
 
     <a href="{{ url_for('main.library_page') }}" class="option-card">
         <div class="option-icon">📚</div>
-        <h2>Icon Library</h2>
-        <p>Browse warning icons, open each one, and read what it means and what to do next.</p>
+        <h2>{{ _("Icon Library") }}</h2>
+        <p>{{ _("Browse warning icons, open each one, and read what it means and what to do next.") }}</p>
     </a>
 </section>
 {% endblock %}

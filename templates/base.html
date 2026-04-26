@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="{{ session.get('language', 'en') }}" dir="{{ 'rtl' if session.get('language') == 'ar' else 'ltr' }}">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{% block title %}Dashboard AI{% endblock %}</title>
+    <title>{% block title %}{{ _("Dashboard AI") }}{% endblock %}</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
 </head>
 <body>
@@ -15,9 +15,18 @@
         </a>
 
         <nav>
-            <a href="{{ url_for('main.home') }}">Home</a>
-            <a href="{{ url_for('main.detect_page') }}">Detect</a>
-            <a href="{{ url_for('main.library_page') }}">Library</a>
+            <a href="{{ url_for('main.home') }}">{{ _("Home") }}</a>
+            <a href="{{ url_for('main.detect_page') }}">{{ _("Detect") }}</a>
+            <a href="{{ url_for('main.library_page') }}">{{ _("Library") }}</a>
+
+            <div class="language-menu">
+                <button type="button" class="language-button">🌐 {{ session.get('language', 'en').upper() }}</button>
+
+                <div class="language-dropdown">
+                    <a href="{{ url_for('main.set_language', language='en') }}">EN</a>
+                    <a href="{{ url_for('main.set_language', language='ar') }}">AR</a>
+                </div>
+            </div>
         </nav>
     </div>
 </header>

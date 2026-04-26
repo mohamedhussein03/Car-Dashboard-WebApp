@@ -1,18 +1,18 @@
 {% extends "base.html" %}
 
-{% block title %}Icon Library{% endblock %}
+{% block title %}{{ _("Icon Library") }}{% endblock %}
 
 {% block content %}
 <section class="library-page">
     <div class="library-header">
-        <span class="section-badge">Library</span>
-        <h1>Dashboard icon library</h1>
-        <p>Choose any icon to see what it means and what action you should take.</p>
+        <span class="section-badge">{{ _("Library") }}</span>
+        <h1>{{ _("Dashboard icon library") }}</h1>
+        <p>{{ _("Choose any icon to see what it means and what action you should take.") }}</p>
     </div>
 
     <section class="library-section">
         <div class="library-ribbon">
-            <span>Supported 16 Icons</span>
+            <span>{{ _("Supported Icons") }}</span>
         </div>
 
         <section class="icon-grid">
@@ -24,19 +24,19 @@
                     </div>
 
                     <div class="icon-card-body">
-                        <span class="icon-chip">Dashboard Icon</span>
+                        <span class="icon-chip">{{ _("Dashboard Icon") }}</span>
                         <h3>{{ icon.display_name }}</h3>
-                        <p class="icon-card-hint">Click to view meaning and action</p>
+                        <p class="icon-card-hint">{{ _("Click to view meaning and action") }}</p>
                     </div>
 
                     <div class="icon-details" id="icon-details-supported-{{ loop.index0 }}">
                         <div class="icon-details-block">
-                            <h4>Meaning</h4>
+                            <h4>{{ _("Meaning") }}</h4>
                             <p>{{ icon.message }}</p>
                         </div>
 
                         <div class="icon-details-block">
-                            <h4>What to do</h4>
+                            <h4>{{ _("What to do") }}</h4>
                             <p>{{ icon.action }}</p>
                         </div>
                     </div>
@@ -47,7 +47,7 @@
 
     <section class="library-section">
         <div class="library-ribbon">
-            <span>Further Icons</span>
+            <span>{{ _("Further Icons") }}</span>
         </div>
 
         <section class="icon-grid">
@@ -59,19 +59,19 @@
                     </div>
 
                     <div class="icon-card-body">
-                        <span class="icon-chip">Dashboard Icon</span>
+                        <span class="icon-chip">{{ _("Dashboard Icon") }}</span>
                         <h3>{{ icon.display_name }}</h3>
-                        <p class="icon-card-hint">Click to view meaning and action</p>
+                        <p class="icon-card-hint">{{ _("Click to view meaning and action") }}</p>
                     </div>
 
                     <div class="icon-details" id="icon-details-further-{{ loop.index0 }}">
                         <div class="icon-details-block">
-                            <h4>Meaning</h4>
+                            <h4>{{ _("Meaning") }}</h4>
                             <p>{{ icon.message }}</p>
                         </div>
 
                         <div class="icon-details-block">
-                            <h4>What to do</h4>
+                            <h4>{{ _("What to do") }}</h4>
                             <p>{{ icon.action }}</p>
                         </div>
                     </div>
@@ -81,62 +81,22 @@
     </section>
 
     <section class="library-contact">
-    <h2>Missing an icon?</h2>
-    <p>Send us a request and we will review it for a future update.</p>
+        <h2>{{ _("Missing an icon?") }}</h2>
+        <p>{{ _("Send us a request and we will review it for a future update.") }}</p>
 
-    <button
-        type="button"
-        class="button-link"
-        onclick="openIconRequestModal()">
-        Contact to Add New Icons
-    </button>
+        <button
+            type="button"
+            class="button-link"
+            onclick="openIconRequestModal()">
+            {{ _("Contact to Add New Icons") }}
+        </button>
 
-    {% if request_message %}
-        <div class="request-message {% if request_status == 'success' %}request-message-success{% else %}request-message-error{% endif %}">
-            {{ request_message }}
-        </div>
-    {% endif %}
-</section>
-
-<div class="modal-overlay" id="iconRequestModal" style="display:none;">
-    <div class="modal-box">
-        <div class="modal-header">
-            <h3>Request a New Dashboard Icon</h3>
-        </div>
-
-        <form
-            action="{{ url_for('main.submit_icon_request') }}"
-            method="POST"
-            enctype="multipart/form-data"
-            class="icon-request-form">
-
-            <label for="requestName">Name</label>
-            <input type="text" id="requestName" name="name" required>
-
-            <label for="requestEmail">Email</label>
-            <input type="email" id="requestEmail" name="email" required>
-
-            <label for="requestIconName">Icon Name</label>
-            <input type="text" id="requestIconName" name="icon_name">
-
-            <label for="requestImage">Icon Image</label>
-            <input type="file" id="requestImage" name="icon_image" accept=".png,.jpg,.jpeg,.webp">
-
-            <label for="requestNotes">Notes</label>
-            <textarea id="requestNotes" name="notes" rows="4"></textarea>
-
-            <div class="modal-actions">
-                <button type="submit" class="button-link">Submit Request</button>
-                <button
-                    type="button"
-                    class="button-link button-link-secondary"
-                    onclick="closeIconRequestModal()">
-                    Cancel
-                </button>
+        {% if request_message %}
+            <div class="request-message {% if request_status == 'success' %}request-message-success{% else %}request-message-error{% endif %}">
+                {{ request_message }}
             </div>
-        </form>
-    </div>
-</div>
+        {% endif %}
+    </section>
 </section>
 
 <script src="{{ url_for('static', filename='js/main.js') }}"></script>

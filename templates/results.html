@@ -1,13 +1,13 @@
 {% extends "base.html" %}
 
-{% block title %}Results{% endblock %}
+{% block title %}{{ _("Results") }}{% endblock %}
 
 {% block content %}
 <section class="results-container">
     <div class="page-intro">
-        <span class="section-badge">Results</span>
-        <h1>Detection result</h1>
-        <p>Your uploaded dashboard image was processed through the app pipeline.</p>
+        <span class="section-badge">{{ _("Results") }}</span>
+        <h1>{{ _("Detection result") }}</h1>
+        <p>{{ _("Your uploaded dashboard image was processed through the app pipeline.") }}</p>
     </div>
 
     {% if image_url %}
@@ -45,7 +45,7 @@
                             <span class="confidence-badge">{{ d.confidence }}</span>
                         </div>
                         <p>{{ d.message }}</p>
-                        <p><strong>Action:</strong> {{ d.action }}</p>
+                        <p><strong>{{ _("Action") }}:</strong> {{ d.action }}</p>
                     </div>
                 </div>
             {% endfor %}
@@ -53,51 +53,11 @@
     {% endif %}
 
     <div class="results-actions">
-        <a href="{{ url_for('main.detect_page') }}" class="button-link">Try Another Image</a>
+        <a href="{{ url_for('main.detect_page') }}" class="button-link">{{ _("Try Another Image") }}</a>
 
-        {% if show_detect_anyway and retry_image_filename %}
-            <button
-                type="button"
-                class="button-link button-link-warning"
-                onclick="openDetectAnywayModal()">
-                Detect Anyway
-            </button>
-        {% endif %}
-
-        <a href="{{ url_for('main.library_page') }}" class="button-link button-link-secondary">Open Library</a>
+        <a href="{{ url_for('main.library_page') }}" class="button-link button-link-secondary">{{ _("Open Library") }}</a>
     </div>
 </section>
-
-{% if show_detect_anyway and retry_image_filename %}
-    <div class="modal-overlay" id="detectAnywayModal" style="display:none;">
-        <div class="modal-box">
-            <div class="modal-header">
-                <span class="warning-icon">⚠</span>
-                <h3>Continue without retaking image?</h3>
-            </div>
-
-            <p class="modal-text">
-                You are choosing to continue detection without retaking the image.
-                Image quality issues, such as blur or poor lighting, may reduce detection accuracy.
-                Are you sure you want to proceed?
-            </p>
-
-            <div class="modal-actions">
-                <form action="{{ url_for('main.detect_anyway') }}" method="POST">
-                    <input type="hidden" name="filename" value="{{ retry_image_filename }}">
-                    <button type="submit" class="button-link button-link-warning">Proceed</button>
-                </form>
-
-                <button
-                    type="button"
-                    class="button-link button-link-secondary"
-                    onclick="closeDetectAnywayModal()">
-                    Cancel
-                </button>
-            </div>
-        </div>
-    </div>
-{% endif %}
 
 <script src="{{ url_for('static', filename='js/main.js') }}"></script>
 {% endblock %}

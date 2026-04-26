@@ -1,25 +1,24 @@
-class_name,display_name,icon_filename,category
+class_name,display_name,display_name_ar,icon_filename,category
+Anti_Lock_Braking_System,Anti Lock Braking System,نظام منع انغلاق المكابح,Anti_Lock_Braking_System.png,supported
+Auto_Shift_Lock,Auto Shift Lock,قفل ناقل الحركة التلقائي,Auto_Shift_Lock.png,supported
+Braking_System_Issue,Braking System Issue,مشكلة في نظام المكابح,Braking_System_Issue.png,supported
+Charging_System_Issue,Charging System Issue,مشكلة في نظام الشحن,Charging_System_Issue.png,supported
+Check_Engine,Check Engine,فحص المحرك,Check_Engine.png,supported
+Engine_Overheating_Warning,Engine Overheating Warning,تحذير ارتفاع حرارة المحرك,Engine_Overheating_Warning.png,supported
+Fog_Lamp_Indicator,Fog Lamp Indicator,مؤشر مصابيح الضباب,Fog_Lamp_Indicator.png,supported
+Lane_Departure,Lane Departure,مغادرة المسار,Lane_Departure.png,supported
+Low_Engine_Oil,Low Engine Oil,انخفاض زيت المحرك,Low_Engine_Oil.png,supported
+Low_Fuel,Low Fuel,انخفاض الوقود,Low_Fuel.png,supported
+Low_Tire_Pressure,Low Tire Pressure,انخفاض ضغط الإطارات,Low_Tire_Pressure.png,supported
+Master_warning_light,Master Warning Light,ضوء التحذير الرئيسي,Master_warning_light.png,supported
+Seat_Belt,Seat Belt,حزام الأمان,Seat_Belt.png,supported
+SRS_Airbag,SRS Airbag,الوسادة الهوائية,ِSRS_Airbag.png,supported
+Traction_Control,Traction Control,نظام التحكم في الجر,Traction_Control.png,supported
 
-Anti_Lock_Braking_System,Anti Lock Braking System,Anti_Lock_Braking_System.png,supported
-Auto_Shift_Lock,Auto Shift Lock,Auto_Shift_Lock.png,supported
-Braking_System_Issue,Braking System Issue,Braking_System_Issue.png,supported
-Charging_System_Issue,Charging System Issue,Charging_System_Issue.png,supported
-Check_Engine,Check Engine,Check_Engine.png,supported
-Engine_Overheating_Warning,Engine Overheating Warning,Engine_Overheating_Warning.png,supported
-Fog_Lamp_Indicator,Fog Lamp Indicator,Fog_Lamp_Indicator.png,supported
-Lane_Departure,Lane Departure,Lane_Departure.png,supported
-Low_Engine_Oil,Low Engine Oil,Low_Engine_Oil.png,supported
-Low_Fuel,Low Fuel,Low_Fuel.png,supported
-Low_Tire_Pressure,Low Tire Pressure,Low_Tire_Pressure.png,supported
-Master_warning_light,Master Warning Light,Master_warning_light.png,supported
-Seat_Belt,Seat Belt,Seat_Belt.png,supported
-SRS_Airbag,SRS Airbag,SRS_Airbag.png,supported
-Traction_Control,Traction Control,Traction_Control.png,supported
-Washer_Fluid,Washer Fluid,Washer_Fluid.png,supported
-
-Transmission_Malfunction,Transmission Malfunction,Transmission_Malfunction.png,further
-Electronic_Throttle_Control,Electronic Throttle Control,Electronic_Throttle_Control.png,further
-Power_Steering_Warning,Power Steering Warning,Power_Steering_Warning.png,further
-Lamp_Out,Lamp Out,Lamp_Out.png,further
-automatic_stop_start_active,Automatic Stop Start Active,automatic_stop_start_active.png,further
-Immoblizer_warning,Immobilizer Warning,Immoblizer_warning.png,further
+Washer_Fluid,Washer Fluid,سائل المساحات,Washer_Fluid.png,supported
+Transmission_Malfunction,Transmission Malfunction,عطل في ناقل الحركة,Transmission_Malfunction.png,further
+Electronic_Throttle_Control,Electronic Throttle Control,نظام التحكم الإلكتروني في دواسة الوقود,Electronic_Throttle_Control.png,further
+Power_Steering_Warning,Power Steering Warning,تحذير نظام التوجيه المعزز,Power_Steering_Warning.png,further
+Lamp_Out,Lamp Out,مصباح خارجي لا يعمل,Lamp_Out.png,further
+automatic_stop_start_active,Automatic Stop Start Active,نظام الإيقاف والتشغيل التلقائي نشط,automatic_stop_start_active.png,further
+Immoblizer_warning,Immobilizer Warning,تحذير مانع تشغيل السيارة,Immoblizer_warning.png,further

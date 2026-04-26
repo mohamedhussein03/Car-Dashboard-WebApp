@@ -1,25 +1,23 @@
-class_name,display_name,message,action
-
-Anti_Lock_Braking_System,Anti Lock Braking System,The anti lock braking system warning is on.,Drive carefully and get the ABS checked soon.
-Auto_Shift_Lock,Auto Shift Lock,There is an issue with the shift lock system.,Try restarting the car. If it stays on, inspect the shift lock system.
-Braking_System_Issue,Braking System Issue,There may be a problem with the braking system.,Stop driving if braking feels unsafe and inspect the brake system immediately.
-Charging_System_Issue,Charging System Issue,The charging system is not working correctly.,Check the battery and alternator as soon as possible.
-Check_Engine,Check Engine,The engine management system detected a fault.,Scan the car for fault codes and inspect the engine soon.
-Engine_Overheating_Warning,Engine Overheating Warning,The engine temperature is too high.,Stop the car safely and let the engine cool down before checking coolant.
-Fog_Lamp_Indicator,Fog Lamp Indicator,The fog lamp indicator is on.,Check whether the fog lamps were intentionally turned on.
-Lane_Departure,Lane Departure,The lane departure warning is active or reporting an issue.,Check lane assist settings and drive carefully.
-Low_Engine_Oil,Low Engine Oil,The engine oil level or pressure may be low.,Check engine oil level immediately and do not ignore this warning.
-Low_Fuel,Low Fuel,The fuel level is low.,Refuel the car as soon as possible.
-Low_Tire_Pressure,Low Tire Pressure,One or more tires may have low pressure.,Check and inflate the tires to the recommended pressure.
-Master_warning_light,Master Warning Light,The car detected an important warning that needs attention.,Check the dashboard and vehicle status for the related warning.
-Seat_Belt,Seat Belt,Seat belt reminder is active.,Fasten the seat belt securely.
-SRS_Airbag,SRS Airbag,There may be a problem with the airbag system.,Have the airbag system inspected as soon as possible.
-Traction_Control,Traction Control,The traction control system is active or has a fault.,Drive carefully and inspect the traction control system if the light stays on.
-Washer_Fluid,Washer Fluid,Washer fluid level is low.,Refill the washer fluid tank.
-
-Transmission_Malfunction,Transmission Malfunction,The transmission system detected a fault.,Drive gently and have the transmission checked as soon as possible.
-Electronic_Throttle_Control,Electronic Throttle Control,The electronic throttle control system detected an issue.,Reduce speed and inspect the throttle control system soon.
-Power_Steering_Warning,Power Steering Warning,The power steering system may not be working correctly.,Steering may feel heavy. Drive carefully and inspect the system soon.
-Lamp_Out,Lamp Out,One of the vehicle exterior lights may not be working.,Check all exterior lamps and replace the failed bulb.
-automatic_stop_start_active,Automatic Stop Start Active,The automatic stop start system is active.,This is usually normal. No action is needed unless the system behaves unexpectedly.
-Immoblizer_warning,Immobilizer Warning,The immobilizer system detected a key or security issue.,Try the correct key and check the vehicle security system if the warning stays on.
+class_name,display_name,display_name_ar,message,message_ar,action,action_ar
+Anti_Lock_Braking_System,Anti Lock Braking System,نظام منع انغلاق المكابح,The anti lock braking system warning is on.,تحذير نظام منع انغلاق المكابح ظاهر.,Drive carefully and get the ABS checked soon.,قد بحذر وافحص نظام منع انغلاق المكابح قريبا.
+Auto_Shift_Lock,Auto Shift Lock,قفل ناقل الحركة التلقائي,There is an issue with the shift lock system.,توجد مشكلة في نظام قفل ناقل الحركة.,Try restarting the car. If it stays on, inspect the shift lock system.,حاول إعادة تشغيل السيارة. إذا ظل التحذير ظاهرا، افحص نظام قفل ناقل الحركة.
+Braking_System_Issue,Braking System Issue,مشكلة في نظام المكابح,There may be a problem with the braking system.,قد توجد مشكلة في نظام المكابح.,Stop driving if braking feels unsafe and inspect the brake system immediately.,توقف عن القيادة إذا كانت المكابح غير آمنة وافحص نظام المكابح فورا.
+Charging_System_Issue,Charging System Issue,مشكلة في نظام الشحن,The charging system is not working correctly.,نظام الشحن لا يعمل بشكل صحيح.,Check the battery and alternator as soon as possible.,افحص البطارية والدينامو في أقرب وقت.
+Check_Engine,Check Engine,فحص المحرك,The engine management system detected a fault.,اكتشف نظام إدارة المحرك عطلا.,Scan the car for fault codes and inspect the engine soon.,افحص السيارة بجهاز كشف الأعطال وافحص المحرك قريبا.
+Engine_Overheating_Warning,Engine Overheating Warning,تحذير ارتفاع حرارة المحرك,The engine temperature is too high.,درجة حرارة المحرك مرتفعة جدا.,Stop the car safely and let the engine cool down before checking coolant.,أوقف السيارة بأمان واترك المحرك يبرد قبل فحص سائل التبريد.
+Fog_Lamp_Indicator,Fog Lamp Indicator,مؤشر مصابيح الضباب,The fog lamp indicator is on.,مؤشر مصابيح الضباب يعمل.,Check whether the fog lamps were intentionally turned on.,تحقق مما إذا كانت مصابيح الضباب تعمل عن قصد.
+Lane_Departure,Lane Departure,مغادرة المسار,The lane departure warning is active or reporting an issue.,تحذير مغادرة المسار نشط أو يشير إلى مشكلة.,Check lane assist settings and drive carefully.,تحقق من إعدادات مساعد المسار وقد بحذر.
+Low_Engine_Oil,Low Engine Oil,انخفاض زيت المحرك,The engine oil level or pressure may be low.,قد يكون مستوى زيت المحرك أو ضغطه منخفضا.,Check engine oil level immediately and do not ignore this warning.,افحص مستوى زيت المحرك فورا ولا تتجاهل هذا التحذير.
+Low_Fuel,Low Fuel,انخفاض الوقود,The fuel level is low.,مستوى الوقود منخفض.,Refuel the car as soon as possible.,زود السيارة بالوقود في أقرب وقت.
+Low_Tire_Pressure,Low Tire Pressure,انخفاض ضغط الإطارات,One or more tires may have low pressure.,قد يكون ضغط إطار واحد أو أكثر منخفضا.,Check and inflate the tires to the recommended pressure.,افحص الإطارات واضبط ضغطها حسب الضغط الموصى به.
+Master_warning_light,Master Warning Light,ضوء التحذير الرئيسي,The car detected an important warning that needs attention.,اكتشفت السيارة تحذيرا مهما يحتاج إلى انتباه.,Check the dashboard and vehicle status for the related warning.,افحص لوحة القيادة وحالة السيارة لمعرفة التحذير المرتبط.
+Seat_Belt,Seat Belt,حزام الأمان,Seat belt reminder is active.,تذكير حزام الأمان نشط.,Fasten the seat belt securely.,اربط حزام الأمان بإحكام.
+SRS_Airbag,SRS Airbag,الوسادة الهوائية,There may be a problem with the airbag system.,قد توجد مشكلة في نظام الوسائد الهوائية.,Have the airbag system inspected as soon as possible.,افحص نظام الوسائد الهوائية في أقرب وقت.
+Traction_Control,Traction Control,نظام التحكم في الجر,The traction control system is active or has a fault.,نظام التحكم في الجر نشط أو يوجد به عطل.,Drive carefully and inspect the traction control system if the light stays on.,قد بحذر وافحص نظام التحكم في الجر إذا ظل الضوء ظاهرا.
+Washer_Fluid,Washer Fluid,سائل المساحات,Washer fluid level is low.,مستوى سائل المساحات منخفض.,Refill the washer fluid tank.,أعد تعبئة خزان سائل المساحات.
+Transmission_Malfunction,Transmission Malfunction,عطل في ناقل الحركة,The transmission system detected a fault.,اكتشف نظام ناقل الحركة عطلا.,Drive gently and have the transmission checked as soon as possible.,قد بهدوء وافحص ناقل الحركة في أقرب وقت.
+Electronic_Throttle_Control,Electronic Throttle Control,نظام التحكم الإلكتروني في دواسة الوقود,The electronic throttle control system detected an issue.,اكتشف نظام التحكم الإلكتروني في دواسة الوقود مشكلة.,Reduce speed and inspect the throttle control system soon.,خفف السرعة وافحص نظام التحكم في دواسة الوقود قريبا.
+Power_Steering_Warning,Power Steering Warning,تحذير نظام التوجيه المعزز,The power steering system may not be working correctly.,قد لا يعمل نظام التوجيه المعزز بشكل صحيح.,Steering may feel heavy. Drive carefully and inspect the system soon.,قد يصبح التوجيه ثقيلا. قد بحذر وافحص النظام قريبا.
+Lamp_Out,Lamp Out,مصباح خارجي لا يعمل,One of the vehicle exterior lights may not be working.,قد لا يعمل أحد المصابيح الخارجية للسيارة.,Check all exterior lamps and replace the failed bulb.,افحص جميع المصابيح الخارجية واستبدل المصباح التالف.
+automatic_stop_start_active,Automatic Stop Start Active,نظام الإيقاف والتشغيل التلقائي نشط,The automatic stop start system is active.,نظام الإيقاف والتشغيل التلقائي نشط.,This is usually normal. No action is needed unless the system behaves unexpectedly.,هذا طبيعي غالبا. لا يلزم أي إجراء إلا إذا كان النظام يعمل بشكل غير متوقع.
+Immoblizer_warning,Immobilizer Warning,تحذير مانع تشغيل السيارة,The immobilizer system detected a key or security issue.,اكتشف نظام مانع تشغيل السيارة مشكلة في المفتاح أو الأمان.,Try the correct key and check the vehicle security system if the warning stays on.,جرب المفتاح الصحيح وافحص نظام أمان السيارة إذا ظل التحذير ظاهرا.
