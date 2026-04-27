@@ -67,7 +67,7 @@ def run_detection(image_path, conf_threshold=0.25):
     imgsz=640,
     max_det=20,
     device="cpu",
-    verbose=True,
+    verbose=False,
     )   
 
     detections = []

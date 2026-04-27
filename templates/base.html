@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="{{ session.get('language', 'en') }}" dir="{{ 'rtl' if session.get('language') == 'ar' else 'ltr' }}">
 <head>
+    <link rel="icon" href="data:,">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{% block title %}{{ _("Dashboard AI") }}{% endblock %}</title>
@@ -23,7 +24,7 @@
                 <a href="{{ url_for('main.set_language', language='en') }}" class="language-pill {% if session.get('language','en') == 'en' %}active{% endif %}">EN</a>
                 <a href="{{ url_for('main.set_language', language='ar') }}" class="language-pill {% if session.get('language','en') == 'ar' %}active{% endif %}">AR</a>
             </div>
-            
+
         </nav>
     </div>
 </header>
