@@ -948,3 +948,13 @@ button:disabled {
     z-index: 2;
     color: #ffffff;
 }
+.detect-anyway-container {
+    margin-top: 20px;
+    text-align: center;
+}
+
+.button-detect-anyway {
+    background-color: #ff9800;
+    color: white;
+    border: none;
+}

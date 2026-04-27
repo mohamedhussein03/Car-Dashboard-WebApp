@@ -25,6 +25,27 @@
         {% endif %}
     </div>
 
+    {% if show_detect_anyway and retry_image_filename %}
+        <div class="detect-anyway-container">
+            <form method="POST" action="{{ url_for('main.detect_anyway') }}">
+                <input type="hidden" name="filename" value="{{ retry_image_filename }}">
+
+                <button type="submit" class="button-link button-detect-anyway">
+                    {{ _("Detect Anyway") }}
+                </button>
+            </form>
+        </div>
+    {% endif %}
+
+    {% if bypass_warning %}
+        <div class="status-box status-box-warning">
+            <div class="warning-message">
+                <span class="warning-icon">⚠</span>
+                <p class="status status-warning">{{ bypass_warning }}</p>
+            </div>
+        </div>
+    {% endif %}
+
     {% if detections %}
         <div class="results-grid">
             {% for d in detections %}
@@ -53,9 +74,13 @@
     {% endif %}
 
     <div class="results-actions">
-        <a href="{{ url_for('main.detect_page') }}" class="button-link">{{ _("Try Another Image") }}</a>
+        <a href="{{ url_for('main.detect_page') }}" class="button-link">
+            {{ _("Try Another Image") }}
+        </a>
 
-        <a href="{{ url_for('main.library_page') }}" class="button-link button-link-secondary">{{ _("Open Library") }}</a>
+        <a href="{{ url_for('main.library_page') }}" class="button-link button-link-secondary">
+            {{ _("Open Library") }}
+        </a>
     </div>
 </section>
 
