@@ -20,6 +20,16 @@
                 <span class="warning-icon">⚠</span>
                 <p class="status status-warning">{{ message }}</p>
             </div>
+
+            {% if show_detect_anyway and retry_image_filename %}
+            <form action="{{ url_for('main.detect_anyway') }}" method="POST" style="margin-top: 15px;">
+                <input type="hidden" name="filename" value="{{ retry_image_filename }}">
+                <button type="submit" class="button-link">
+                    {{ _("Detect Anyway") }}
+                </button>
+            </form>
+            {% endif %}
+
         {% else %}
             <p class="status">{{ message }}</p>
         {% endif %}

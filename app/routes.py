@@ -9,6 +9,8 @@ from app.services.message_service import attach_messages_to_detections
 from app.services.preprocessing import run_preprocessing
 from app.utils.file_helpers import generate_output_filename
 
+from uuid import uuid4
+
 main = Blueprint("main", __name__)
 
 
@@ -154,7 +156,12 @@ def detect_page():
             retry_image_filename=None,
         )
 
-    filename = secure_filename(file.filename)
+    original_extension = file.filename.rsplit(".", 1)[1].lower()
+    safe_stem = secure_filename(file.filename.rsplit(".", 1)[0])
+    if not safe_stem:
+        safe_stem = "uploaded_image"
+    filename = f"{safe_stem}_{uuid4().hex[:8]}.{original_extension}"
+
     upload_folder = Path(current_app.config["UPLOAD_FOLDER"])
     upload_folder.mkdir(parents=True, exist_ok=True)
 
