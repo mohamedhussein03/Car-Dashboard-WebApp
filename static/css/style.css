@@ -322,11 +322,11 @@ button:disabled {
 }
 
 .icon-image {
+    width: 100%;
     height: 160px;
-    background-size: contain;
-    background-repeat: no-repeat;
-    background-position: center;
-    background-color: rgba(32, 81, 93, 0.08);
+    object-fit: contain;
+    background: #f8fafc;
+    padding: 10px;
 }
 
 .icon-card-body {
@@ -810,10 +810,7 @@ button:disabled {
     background: rgba(255, 255, 255, 0.15);
     color: #ffffff;
 }
-.language-menu {
-    position: relative;
-    display: inline-block;
-}
+
 
 .language-button {
     border: none;
@@ -824,33 +821,7 @@ button:disabled {
     padding: 8px 10px;
 }
 
-.language-dropdown {
-    display: none;
-    position: absolute;
-    top: 100%;
-    right: 0;
-    min-width: 90px;
-    background: #ffffff;
-    border-radius: 10px;
-    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
-    z-index: 20;
-    overflow: hidden;
-}
 
-.language-dropdown a {
-    display: block;
-    padding: 10px 14px;
-    color: #111827;
-    text-decoration: none;
-}
-
-.language-dropdown a:hover {
-    background: #f3f4f6;
-}
-
-.language-menu:hover .language-dropdown {
-    display: block;
-}
 
 
 
@@ -1045,10 +1016,7 @@ nav a:hover {
     background: #bae6fd;
 }
 
-.language-dropdown {
-    border: 1px solid rgba(2, 132, 199, 0.14);
-    box-shadow: 0 18px 40px rgba(2, 132, 199, 0.16);
-}
+
 
 .loading-overlay {
     background: rgba(15, 23, 42, 0.28);
@@ -1137,8 +1105,7 @@ nav a:hover {
     }
 
     .icon-card {
-        width: auto;
-        flex: unset;
+    overflow: hidden;
     }
 
     .result-card-with-icon {
@@ -1183,5 +1150,139 @@ nav a:hover {
 
     .upload-form {
         padding: 22px;
+    }
+}
+
+/* FIX library icon background images */
+.icon-card {
+    overflow: hidden !important;
+}
+
+.icon-image {
+    width: 100% !important;
+    height: 160px !important;
+    background-size: contain !important;
+    background-repeat: no-repeat !important;
+    background-position: center !important;
+    background-color: #f8fafc !important;
+    padding: 0 !important;
+    display: block !important;
+}
+
+
+.language-button {
+    display: inline-flex !important;
+    align-items: center !important;
+    gap: 6px !important;
+    padding: 9px 14px !important;
+    border-radius: 999px !important;
+    background: #e0f2fe !important;
+    color: #0369a1 !important;
+    border: 1px solid rgba(2, 132, 199, 0.22) !important;
+    font-weight: 800 !important;
+    text-decoration: none !important;
+    white-space: nowrap !important;
+}
+
+.language-button:hover {
+    background: #bae6fd !important;
+}
+
+
+/* FINAL language toggle */
+nav .language-button {
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    gap: 6px !important;
+    padding: 9px 14px !important;
+    border-radius: 999px !important;
+    background: #e0f2fe !important;
+    color: #0369a1 !important;
+    border: 1px solid rgba(2, 132, 199, 0.22) !important;
+    font-weight: 800 !important;
+    text-decoration: none !important;
+    white-space: nowrap !important;
+    pointer-events: auto !important;
+    cursor: pointer !important;
+    position: relative !important;
+    z-index: 99999 !important;
+}
+
+nav .language-button:hover {
+    background: #bae6fd !important;
+    color: #0369a1 !important;
+}
+
+.language-form {
+    display: inline-flex !important;
+    margin: 0 !important;
+    padding: 0 !important;
+}
+
+nav .language-button {
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    gap: 6px !important;
+    padding: 9px 14px !important;
+    border-radius: 999px !important;
+    background: #e0f2fe !important;
+    color: #0369a1 !important;
+    border: 1px solid rgba(2, 132, 199, 0.22) !important;
+    font-weight: 800 !important;
+    text-decoration: none !important;
+    white-space: nowrap !important;
+    pointer-events: auto !important;
+    cursor: pointer !important;
+    position: relative !important;
+    z-index: 99999 !important;
+    font: inherit !important;
+}
+
+nav .language-button:hover {
+    background: #bae6fd !important;
+}
+
+/* Language switch pills */
+.language-switch {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    background: #e0f2fe;
+    padding: 4px;
+    border-radius: 999px;
+    border: 1px solid rgba(2, 132, 199, 0.25);
+}
+
+.language-pill {
+    padding: 6px 12px;
+    border-radius: 999px;
+    text-decoration: none;
+    font-weight: 700;
+    color: #0369a1;
+    transition: background 0.2s ease;
+}
+
+.language-pill:hover {
+    background: #bae6fd;
+}
+
+.language-pill.active {
+    background: #0284c7;
+    color: #ffffff;
+}
+
+/* FIX mobile library spacing */
+@media (max-width: 768px) {
+    .icon-grid {
+        display: grid !important;
+        grid-template-columns: repeat(2, 1fr) !important;
+        gap: 8px !important;   /* <-- spacing between cards */
+        padding: 0 12px !important;
+    }
+
+    .icon-card {
+        margin: 0 !important;
     }
 }

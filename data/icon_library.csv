@@ -12,7 +12,7 @@ Low_Fuel,Low Fuel,انخفاض الوقود,Low_Fuel.png,supported
 Low_Tire_Pressure,Low Tire Pressure,انخفاض ضغط الإطارات,Low_Tire_Pressure.png,supported
 Master_warning_light,Master Warning Light,ضوء التحذير الرئيسي,Master_warning_light.png,supported
 Seat_Belt,Seat Belt,حزام الأمان,Seat_Belt.png,supported
-SRS_Airbag,SRS Airbag,الوسادة الهوائية,ِSRS_Airbag.png,supported
+SRS_Airbag,SRS Airbag,الوسادة الهوائية,SRS_Airbag.png,supported
 Traction_Control,Traction Control,نظام التحكم في الجر,Traction_Control.png,supported
 
 Washer_Fluid,Washer Fluid,سائل المساحات,Washer_Fluid.png,supported
