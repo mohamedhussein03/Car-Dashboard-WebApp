@@ -3,83 +3,121 @@
 {% block title %}{{ _("Icon Library") }}{% endblock %}
 
 {% block content %}
-<section class="library-page">
-    <div class="library-header">
-        <span class="section-badge">{{ _("Library") }}</span>
-        <h1>{{ _("Dashboard icon library") }}</h1>
-        <p>{{ _("Choose any icon to see what it means and what action you should take.") }}</p>
-    </div>
 
-    <section class="library-section">
-        <div class="library-ribbon">
-            <span>{{ _("Supported Icons") }}</span>
-        </div>
+<header class="page-header">
+  <div class="container">
+    <span class="section-badge">{{ _("Library") }}</span>
+    <h1>{{ _("Dashboard icon library") }}</h1>
+    <p>{{ _("Click any icon to expand its meaning and the action you should take.") }}</p>
+  </div>
+</header>
 
-        <section class="icon-grid">
-            {% for icon in supported_icons %}
-                <article class="icon-card" onclick="toggleIconDetails('supported-{{ loop.index0 }}')">
-                    <div
-                        class="icon-image"
-                        style="background-image: url('{{ url_for('static', filename='icons/' + icon.icon_filename) }}');">
-                    </div>
+<div class="page-body">
+  <div class="container">
 
-                    <div class="icon-card-body">
-                        <span class="icon-chip">{{ _("Dashboard Icon") }}</span>
-                        <h3>{{ icon.display_name }}</h3>
-                        <p class="icon-card-hint">{{ _("Click to view meaning and action") }}</p>
-                    </div>
+    <section class="library-section" aria-labelledby="supported-heading">
+      <div class="section-divider">
+        <h2 class="section-divider-label" id="supported-heading">{{ _("Supported Icons") }}</h2>
+        <span class="section-divider-line" aria-hidden="true"></span>
+        <span class="section-divider-count">{{ supported_icons | length }} {{ _("icons") }}</span>
+      </div>
 
-                    <div class="icon-details" id="icon-details-supported-{{ loop.index0 }}">
-                        <div class="icon-details-block">
-                            <h4>{{ _("Meaning") }}</h4>
-                            <p>{{ icon.message }}</p>
-                        </div>
+      <div class="icon-grid" role="list">
+        {% for icon in supported_icons %}
+          <article
+            class="icon-card"
+            role="listitem"
+            onclick="toggleIconDetails('supported-{{ loop.index0 }}')"
+            onkeydown="if(event.key==='Enter'||event.key===' ')toggleIconDetails('supported-{{ loop.index0 }}')"
+            tabindex="0"
+            aria-expanded="false"
+            id="icon-card-supported-{{ loop.index0 }}"
+            aria-label="{{ icon.display_name }}"
+          >
+            <div class="icon-card-img" aria-hidden="true">
+              <img
+                src="{{ url_for('static', filename='icons/' + icon.icon_filename) }}"
+                alt="{{ icon.display_name }}"
+                loading="lazy"
+              >
+            </div>
 
-                        <div class="icon-details-block">
-                            <h4>{{ _("What to do") }}</h4>
-                            <p>{{ icon.action }}</p>
-                        </div>
-                    </div>
-                </article>
-            {% endfor %}
-        </section>
+            <div class="icon-card-body">
+              <span class="icon-chip">{{ _("Dashboard Icon") }}</span>
+              <h3>{{ icon.display_name }}</h3>
+              <p class="icon-card-hint">
+                <span class="icon-card-hint-arrow" aria-hidden="true">▾</span>
+                {{ _("Click to expand") }}
+              </p>
+            </div>
+
+            <div class="icon-details" id="icon-details-supported-{{ loop.index0 }}" role="region">
+              <div class="icon-details-block">
+                <h4>{{ _("Meaning") }}</h4>
+                <p>{{ icon.message }}</p>
+              </div>
+              <div class="icon-details-block">
+                <h4>{{ _("What to do") }}</h4>
+                <p>{{ icon.action }}</p>
+              </div>
+            </div>
+          </article>
+        {% endfor %}
+      </div>
     </section>
 
-    <section class="library-section">
-        <div class="library-ribbon">
-            <span>{{ _("Further Icons") }}</span>
-        </div>
+    <section class="library-section" aria-labelledby="further-heading">
+      <div class="section-divider">
+        <h2 class="section-divider-label" id="further-heading">{{ _("Further Icons") }}</h2>
+        <span class="section-divider-line" aria-hidden="true"></span>
+        <span class="section-divider-count">{{ further_icons | length }} {{ _("icons") }}</span>
+      </div>
 
-        <section class="icon-grid">
-            {% for icon in further_icons %}
-                <article class="icon-card" onclick="toggleIconDetails('further-{{ loop.index0 }}')">
-                    <div
-                        class="icon-image"
-                        style="background-image: url('{{ url_for('static', filename='icons/' + icon.icon_filename) }}');">
-                    </div>
+      <div class="icon-grid" role="list">
+        {% for icon in further_icons %}
+          <article
+            class="icon-card"
+            role="listitem"
+            onclick="toggleIconDetails('further-{{ loop.index0 }}')"
+            onkeydown="if(event.key==='Enter'||event.key===' ')toggleIconDetails('further-{{ loop.index0 }}')"
+            tabindex="0"
+            aria-expanded="false"
+            id="icon-card-further-{{ loop.index0 }}"
+            aria-label="{{ icon.display_name }}"
+          >
+            <div class="icon-card-img" aria-hidden="true">
+              <img
+                src="{{ url_for('static', filename='icons/' + icon.icon_filename) }}"
+                alt="{{ icon.display_name }}"
+                loading="lazy"
+              >
+            </div>
 
-                    <div class="icon-card-body">
-                        <span class="icon-chip">{{ _("Dashboard Icon") }}</span>
-                        <h3>{{ icon.display_name }}</h3>
-                        <p class="icon-card-hint">{{ _("Click to view meaning and action") }}</p>
-                    </div>
+            <div class="icon-card-body">
+              <span class="icon-chip">{{ _("Dashboard Icon") }}</span>
+              <h3>{{ icon.display_name }}</h3>
+              <p class="icon-card-hint">
+                <span class="icon-card-hint-arrow" aria-hidden="true">▾</span>
+                {{ _("Click to expand") }}
+              </p>
+            </div>
 
-                    <div class="icon-details" id="icon-details-further-{{ loop.index0 }}">
-                        <div class="icon-details-block">
-                            <h4>{{ _("Meaning") }}</h4>
-                            <p>{{ icon.message }}</p>
-                        </div>
-
-                        <div class="icon-details-block">
-                            <h4>{{ _("What to do") }}</h4>
-                            <p>{{ icon.action }}</p>
-                        </div>
-                    </div>
-                </article>
-            {% endfor %}
-        </section>
+            <div class="icon-details" id="icon-details-further-{{ loop.index0 }}" role="region">
+              <div class="icon-details-block">
+                <h4>{{ _("Meaning") }}</h4>
+                <p>{{ icon.message }}</p>
+              </div>
+              <div class="icon-details-block">
+                <h4>{{ _("What to do") }}</h4>
+                <p>{{ icon.action }}</p>
+              </div>
+            </div>
+          </article>
+        {% endfor %}
+      </div>
     </section>
-</section>
 
-<script src="{{ url_for('static', filename='js/main.js') }}"></script>
+  </div>
+</div>
+
 {% endblock %}

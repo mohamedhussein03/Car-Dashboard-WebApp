@@ -3,71 +3,183 @@
 {% block title %}{{ _("Results") }}{% endblock %}
 
 {% block content %}
-<section class="results-container">
-    <div class="page-intro">
-        <span class="section-badge">{{ _("Results") }}</span>
-        <h1>{{ _("Detection result") }}</h1>
-        <p>{{ _("Your uploaded dashboard image was processed through the app pipeline.") }}</p>
-    </div>
 
-    {% if image_url %}
-        <img src="{{ image_url }}" class="result-image" alt="Processed result image">
-    {% endif %}
+{# Severity map — determines alert card color and badge label #}
+{% set severity_map = {
+  'Braking_System_Issue':       'critical',
+  'Engine_Overheating_Warning': 'critical',
+  'SRS_Airbag':                 'critical',
+  'Low_Engine_Oil':             'critical',
+  'Check_Engine':               'warning',
+  'Charging_System_Issue':      'warning',
+  'Anti_Lock_Braking_System':   'warning',
+  'Electronic_Throttle_Control':'warning',
+  'Power_Steering_Warning':     'warning',
+  'Auto_Shift_Lock':            'warning',
+  'Low_Tire_Pressure':          'warning',
+  'Traction_Control':           'warning',
+  'Master_warning_light':       'warning',
+  'Immoblizer_warning':         'warning',
+  'Lane_Departure':             'warning',
+  'Transmission_Malfunction':   'warning',
+  'Low_Fuel':                   'info',
+  'Fog_Lamp_Indicator':         'info',
+  'Seat_Belt':                  'info',
+  'Washer_Fluid':               'info',
+  'Lamp_Out':                   'info',
+  'automatic_stop_start_active':'info',
+} %}
 
-    <div class="status-box {% if status == 'rejected' %}status-box-warning{% endif %}">
+{% set severity_label = {
+  'critical': _("Critical"),
+  'warning':  _("Warning"),
+  'info':     _("Info"),
+} %}
+
+{% set severity_icon = {
+  'critical': '🔴',
+  'warning':  '🟡',
+  'info':     '🟢',
+} %}
+
+<header class="page-header">
+  <div class="container">
+    <span class="section-badge">{{ _("Results") }}</span>
+    <h1>{{ _("Detection result") }}</h1>
+    <p>{{ _("Your dashboard image was processed through the AI pipeline.") }}</p>
+  </div>
+</header>
+
+<div class="page-body">
+  <div class="container">
+    <div class="results-layout">
+
+      {# ── Left column: annotated image ── #}
+      <aside class="results-image-panel" aria-label="{{ _('Processed image') }}">
+        <div class="panel-header">
+          <span class="panel-header-dot"></span>
+          <h3>{{ _("Processed image") }}</h3>
+        </div>
+        {% if image_url %}
+          <img src="{{ image_url }}" class="result-image" alt="{{ _('Annotated dashboard image with detected icons') }}">
+        {% else %}
+          <div class="no-image-placeholder">
+            <span aria-hidden="true">🖼️</span>
+            <p>{{ _("No processed image available") }}</p>
+          </div>
+        {% endif %}
+      </aside>
+
+      {# ── Right column: status + detections ── #}
+      <section class="results-detections-panel" aria-label="{{ _('Detection results') }}">
+
+        {# Status banner #}
         {% if status == 'rejected' %}
-            <div class="warning-message">
-                <span class="warning-icon">⚠</span>
-                <p class="status status-warning">{{ message }}</p>
+          <div class="status-banner s-warning" role="alert">
+            <span class="status-banner-icon" aria-hidden="true">⚠️</span>
+            <div>
+              <div class="status-banner-title">{{ _("Image quality check failed") }}</div>
+              <div class="status-banner-msg">{{ message }}</div>
+              {% if show_detect_anyway and retry_image_filename %}
+                <div class="detect-anyway-row">
+                  <form action="{{ url_for('main.detect_anyway') }}" method="POST">
+                    <input type="hidden" name="filename" value="{{ retry_image_filename }}">
+                    <button type="submit" class="btn btn-warning btn-sm">
+                      {{ _("Detect Anyway") }}
+                    </button>
+                  </form>
+                </div>
+              {% endif %}
             </div>
+          </div>
 
-            {% if show_detect_anyway and retry_image_filename %}
-            <form action="{{ url_for('main.detect_anyway') }}" method="POST" style="margin-top: 15px;">
-                <input type="hidden" name="filename" value="{{ retry_image_filename }}">
-                <button type="submit" class="button-link">
-                    {{ _("Detect Anyway") }}
-                </button>
-            </form>
-            {% endif %}
+        {% elif status == 'error' %}
+          <div class="status-banner s-error" role="alert">
+            <span class="status-banner-icon" aria-hidden="true">❌</span>
+            <div>
+              <div class="status-banner-title">{{ _("An error occurred") }}</div>
+              <div class="status-banner-msg">{{ message }}</div>
+            </div>
+          </div>
+
+        {% elif status == 'empty' %}
+          <div class="status-banner s-neutral" role="status">
+            <span class="status-banner-icon" aria-hidden="true">🔍</span>
+            <div>
+              <div class="status-banner-title">{{ _("No icons detected") }}</div>
+              <div class="status-banner-msg">{{ message }}</div>
+            </div>
+          </div>
 
         {% else %}
-            <p class="status">{{ message }}</p>
+          <div class="status-banner s-success" role="status">
+            <span class="status-banner-icon" aria-hidden="true">✅</span>
+            <div>
+              <div class="status-banner-title">{{ _("Image accepted") }}</div>
+              <div class="status-banner-msg">{{ message }}</div>
+            </div>
+          </div>
         {% endif %}
-    </div>
 
-    {% if detections %}
-        <div class="results-grid">
-            {% for d in detections %}
-                <div class="result-card result-card-with-icon">
-                    <div class="result-icon-box">
-                        {% if d.icon_filename %}
-                            <img
-                                src="{{ url_for('static', filename='icons/' + d.icon_filename) }}"
-                                alt="{{ d.display_name }}"
-                                class="result-icon-image"
-                            >
-                        {% endif %}
-                    </div>
+        {# Detection cards #}
+        {% if detections %}
+          <div class="detections-header">
+            <h2>{{ _("Detected indicators") }}</h2>
+            <span class="detection-count">{{ detections | length }}</span>
+          </div>
 
-                    <div class="result-content">
-                        <div class="result-card-top">
-                            <h3>{{ d.display_name }}</h3>
-                            <span class="confidence-badge">{{ d.confidence }}</span>
-                        </div>
-                        <p>{{ d.message }}</p>
-                        <p><strong>{{ _("Action") }}:</strong> {{ d.action }}</p>
-                    </div>
+          {% for d in detections %}
+            {% set sev = severity_map.get(d.class_name, 'warning') %}
+            <article class="alert-card {{ sev }}" aria-label="{{ d.display_name }}">
+
+              <div class="alert-icon" aria-hidden="true">
+                {% if d.icon_filename %}
+                  <img
+                    src="{{ url_for('static', filename='icons/' + d.icon_filename) }}"
+                    alt="{{ d.display_name }}"
+                  >
+                {% else %}
+                  <span style="font-size:1.25rem;">⚠️</span>
+                {% endif %}
+              </div>
+
+              <div class="alert-body">
+                <div class="alert-top">
+                  <h3>{{ d.display_name }}</h3>
+                  <span class="severity-chip {{ sev }}">{{ severity_label.get(sev, sev) }}</span>
+                  <span class="conf-chip">{{ (d.confidence * 100) | round(1) }}%</span>
                 </div>
-            {% endfor %}
+                <p class="alert-msg">{{ d.message }}</p>
+                <div class="alert-action">
+                  <span class="alert-action-label">{{ _("Action") }}</span>
+                  <p>{{ d.action }}</p>
+                </div>
+              </div>
+
+            </article>
+          {% endfor %}
+
+        {% elif status not in ['rejected', 'error'] %}
+          <div class="no-detections">
+            <span class="no-detections-icon" aria-hidden="true">🔍</span>
+            <h3>{{ _("No warning icons detected") }}</h3>
+            <p>{{ _("The model did not find any recognizable dashboard indicators in this image.") }}</p>
+          </div>
+        {% endif %}
+
+        {# Action buttons #}
+        <div class="results-actions">
+          <a href="{{ url_for('main.detect_page') }}" class="btn btn-primary">
+            {{ _("Try Another Image") }}
+          </a>
+          <a href="{{ url_for('main.library_page') }}" class="btn btn-secondary">
+            {{ _("Open Library") }}
+          </a>
         </div>
-    {% endif %}
 
-    <div class="results-actions">
-        <a href="{{ url_for('main.detect_page') }}" class="button-link">{{ _("Try Another Image") }}</a>
-
-        <a href="{{ url_for('main.library_page') }}" class="button-link button-link-secondary">{{ _("Open Library") }}</a>
+      </section>
     </div>
-</section>
+  </div>
+</div>
 
-<script src="{{ url_for('static', filename='js/main.js') }}"></script>
 {% endblock %}

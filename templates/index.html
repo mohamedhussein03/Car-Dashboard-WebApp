@@ -3,29 +3,36 @@
 {% block title %}{{ _("Home") }}{% endblock %}
 
 {% block content %}
-<section class="hero hero-image">
-    <div class="hero-overlay"></div>
 
-    <div class="container hero-content">
-        <span class="hero-badge">{{ _("AI Dashboard Assistant") }}</span>
-        <h1>{{ _("Understand your car dashboard in seconds") }}</h1>
-        <p>
-            {{ _("Upload a dashboard image for automatic warning icon detection, or browse the icon library to learn what each warning means.") }}
-        </p>
+<section class="hero" aria-labelledby="hero-heading">
+  <div class="container hero-content">
+    <div class="hero-badge">
+      <span class="hero-badge-dot"></span>
+      {{ _("AI-Powered Detection") }}
     </div>
+    <h1 id="hero-heading">
+      {{ _("Understand your") }} <em>{{ _("dashboard warnings") }}</em><br>{{ _("in seconds") }}
+    </h1>
+    <p class="hero-sub">
+      {{ _("Upload a dashboard photo for automatic warning icon detection, or browse the library to learn what each indicator means.") }}
+    </p>
+  </div>
 </section>
 
-<section class="home-options">
-    <a href="{{ url_for('main.detect_page') }}" class="option-card">
-        <div class="option-icon">📷</div>
-        <h2>{{ _("Upload Image") }}</h2>
-        <p>{{ _("Run preprocessing checks, detect dashboard icons, and get a clear action message.") }}</p>
-    </a>
+<div class="home-options">
+  <a href="{{ url_for('main.detect_page') }}" class="option-card" aria-label="{{ _('Upload an image for detection') }}">
+    <div class="option-icon" aria-hidden="true">📷</div>
+    <h2>{{ _("Upload Image") }}</h2>
+    <p>{{ _("Run quality checks, detect dashboard warning icons, and get clear action guidance instantly.") }}</p>
+    <span class="option-card-arrow" aria-hidden="true">→</span>
+  </a>
 
-    <a href="{{ url_for('main.library_page') }}" class="option-card">
-        <div class="option-icon">📚</div>
-        <h2>{{ _("Icon Library") }}</h2>
-        <p>{{ _("Browse warning icons, open each one, and read what it means and what to do next.") }}</p>
-    </a>
-</section>
+  <a href="{{ url_for('main.library_page') }}" class="option-card" aria-label="{{ _('Browse the icon library') }}">
+    <div class="option-icon" aria-hidden="true">📚</div>
+    <h2>{{ _("Icon Library") }}</h2>
+    <p>{{ _("Browse all supported warning icons, expand each one to read its meaning and recommended action.") }}</p>
+    <span class="option-card-arrow" aria-hidden="true">→</span>
+  </a>
+</div>
+
 {% endblock %}
