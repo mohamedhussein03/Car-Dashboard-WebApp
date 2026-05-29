@@ -7,6 +7,11 @@ __pycache__/
 venv/
 .env/
 
+# Environment variables
+.env
+a.env
+*.env
+
 # Flask uploads and runtime files
 static/uploads/
 static/suggestions/
@@ -20,3 +25,4 @@ static/suggestions/
 
 # Large model (handle separately)
 model/best.pt
+

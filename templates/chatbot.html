@@ -1,0 +1,207 @@
+{% extends "base.html" %}
+
+{% block title %}{{ _("Ask Dashly") }}{% endblock %}
+
+{% block content %}
+
+<header class="page-header">
+  <div class="container">
+    <span class="section-badge">{{ _("AI Assistant") }}</span>
+    <h1>{{ _("Ask Dashly") }}</h1>
+    <p>{{ _("Your personal AI mechanic for dashboard warnings. Ask about any warning light, get repair guidance, and know when to call a professional.") }}</p>
+  </div>
+</header>
+
+<div class="page-body chat-page-body">
+  <div class="container">
+    <div class="chat-wrapper">
+
+      <!-- ── Chat window ── -->
+      <div class="chat-window" id="chatWindow" role="log" aria-live="polite" aria-label="{{ _('Conversation with Dashly') }}">
+        <!-- Greeting injected by JS on load -->
+      </div>
+
+      <!-- ── Input area ── -->
+      <div class="chat-input-area">
+        <form class="chat-form" id="chatForm" autocomplete="off">
+          <textarea
+            id="chatInput"
+            class="chat-input"
+            placeholder="{{ _('Ask about a dashboard warning…') }}"
+            rows="1"
+            maxlength="1000"
+            aria-label="{{ _('Your message') }}"
+          ></textarea>
+          <button type="submit" class="btn btn-primary chat-send-btn" id="chatSendBtn" aria-label="{{ _('Send message') }}">
+            ↑
+          </button>
+        </form>
+        <p class="chat-hint">{{ _("Press Enter to send · Shift+Enter for a new line") }}</p>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<script>
+/* ── Constants ────────────────────────────────────────────── */
+const GREETING = {{ _("Hi, I'm Dashly — your personal AI assistant for car dashboard warnings and errors. Ask me anything about your car's warning lights, what they mean, and how to fix them. 🚗") | tojson }};
+const CHATBOT_URL = "{{ url_for('main.chatbot_page') }}";
+
+/* ── State ────────────────────────────────────────────────── */
+let conversationHistory = [];
+
+/* ── Minimal safe markdown renderer ──────────────────────── */
+function renderMarkdown(raw) {
+  let t = raw
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;');
+
+  // Bold and italic
+  t = t.replace(/\*\*\*(.*?)\*\*\*/g, '<strong><em>$1</em></strong>');
+  t = t.replace(/\*\*(.*?)\*\*/g,     '<strong>$1</strong>');
+  t = t.replace(/\*(.*?)\*/g,         '<em>$1</em>');
+
+  // Inline code
+  t = t.replace(/`([^`]+)`/g, '<code class="chat-code">$1</code>');
+
+  // Numbered list lines  (1. item)
+  t = t.replace(/^(\d+)\. (.+)$/gm, '<div class="chat-list-item chat-list-numbered"><span class="chat-list-num">$1</span><span>$2</span></div>');
+
+  // Bullet lines  (- item or * item)
+  t = t.replace(/^[•\-\*] (.+)$/gm, '<div class="chat-list-item"><span class="chat-list-bullet">•</span><span>$1</span></div>');
+
+  // Headings
+  t = t.replace(/^### (.+)$/gm, '<p class="chat-heading chat-h3">$1</p>');
+  t = t.replace(/^## (.+)$/gm,  '<p class="chat-heading chat-h2">$1</p>');
+
+  // Paragraph breaks (double newline)
+  t = t.replace(/\n{2,}/g, '</p><p>');
+  // Single newline
+  t = t.replace(/\n/g, '<br>');
+
+  return '<p>' + t + '</p>';
+}
+
+/* ── Build a message element ──────────────────────────────── */
+function makeMessage(role, content, isTyping) {
+  const wrap = document.createElement('div');
+  wrap.className = 'chat-message chat-message-' + role;
+
+  const avatar = document.createElement('div');
+  avatar.className = 'chat-avatar';
+  avatar.setAttribute('aria-hidden', 'true');
+  avatar.textContent = role === 'user' ? 'U' : 'D';
+
+  const bubble = document.createElement('div');
+  bubble.className = 'chat-bubble';
+
+  if (isTyping) {
+    bubble.innerHTML = '<div class="typing-dots" aria-label="{{ _("Dashly is typing") }}"><span></span><span></span><span></span></div>';
+  } else if (role === 'assistant') {
+    bubble.innerHTML = renderMarkdown(content);
+  } else {
+    // User messages: plain text only (safe)
+    bubble.textContent = content;
+  }
+
+  wrap.appendChild(avatar);
+  wrap.appendChild(bubble);
+  return wrap;
+}
+
+/* ── Scroll chat to bottom ────────────────────────────────── */
+function scrollBottom() {
+  const w = document.getElementById('chatWindow');
+  w.scrollTop = w.scrollHeight;
+}
+
+/* ── Append a message and scroll ─────────────────────────── */
+function appendMessage(role, content, isTyping) {
+  const el = makeMessage(role, content, isTyping);
+  if (isTyping) el.id = 'typingIndicator';
+  document.getElementById('chatWindow').appendChild(el);
+  scrollBottom();
+  return el;
+}
+
+/* ── Send message to backend ──────────────────────────────── */
+async function sendMessage(text) {
+  const input   = document.getElementById('chatInput');
+  const sendBtn = document.getElementById('chatSendBtn');
+
+  appendMessage('user', text, false);
+  conversationHistory.push({ role: 'user', content: text });
+
+  appendMessage('assistant', '', true);   // typing indicator
+
+  input.disabled   = true;
+  sendBtn.disabled = true;
+
+  try {
+    const res  = await fetch(CHATBOT_URL, {
+      method:  'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body:    JSON.stringify({
+        message: text,
+        history: conversationHistory.slice(0, -1),  // exclude current message
+      }),
+    });
+
+    const data = await res.json();
+    const typingEl = document.getElementById('typingIndicator');
+    if (typingEl) typingEl.remove();
+
+    const reply = data.error
+      ? '⚠️ ' + data.error
+      : data.response;
+
+    appendMessage('assistant', reply, false);
+
+    if (!data.error) {
+      conversationHistory.push({ role: 'assistant', content: data.response });
+    }
+
+  } catch (_) {
+    const typingEl = document.getElementById('typingIndicator');
+    if (typingEl) typingEl.remove();
+    appendMessage('assistant', '⚠️ {{ _("Connection error. Please check your network and try again.") }}', false);
+  }
+
+  input.disabled   = false;
+  sendBtn.disabled = false;
+  input.focus();
+  scrollBottom();
+}
+
+/* ── Form submit ──────────────────────────────────────────── */
+document.getElementById('chatForm').addEventListener('submit', function (e) {
+  e.preventDefault();
+  const input = document.getElementById('chatInput');
+  const text  = input.value.trim();
+  if (!text) return;
+  input.value = '';
+  input.style.height = 'auto';
+  sendMessage(text);
+});
+
+/* ── Enter = send, Shift+Enter = newline ──────────────────── */
+document.getElementById('chatInput').addEventListener('keydown', function (e) {
+  if (e.key === 'Enter' && !e.shiftKey) {
+    e.preventDefault();
+    document.getElementById('chatForm').dispatchEvent(new Event('submit'));
+  }
+});
+
+/* ── Auto-resize textarea ─────────────────────────────────── */
+document.getElementById('chatInput').addEventListener('input', function () {
+  this.style.height = 'auto';
+  this.style.height = Math.min(this.scrollHeight, 130) + 'px';
+});
+
+/* ── Show greeting on load ────────────────────────────────── */
+appendMessage('assistant', GREETING, false);
+</script>
+
+{% endblock %}

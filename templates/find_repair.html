@@ -1,0 +1,343 @@
+{% extends "base.html" %}
+
+{% block title %}{{ _("Find Repair") }}{% endblock %}
+
+{% block content %}
+
+<!-- ── Hero ── -->
+<header class="page-header">
+  <div class="container">
+    <span class="section-badge">{{ _("Repair Help") }}</span>
+    <h1>{{ _("Find Repair Help") }}</h1>
+    <p>{{ _("Locate nearby mechanics and repair shops, or call for a tow truck immediately. We'll help you get back on the road safely.") }}</p>
+  </div>
+</header>
+
+<div class="page-body">
+  <div class="container">
+
+    <!-- ── Action Buttons ── -->
+    <div class="repair-actions">
+      <button class="btn btn-primary btn-lg repair-btn" id="findNearMeBtn" onclick="findNearMe()">
+        <span class="repair-btn-icon" aria-hidden="true">📍</span>
+        {{ _("Find Repair Help Near Me") }}
+      </button>
+      <a href="tel:01276192726" class="btn btn-tow btn-lg repair-btn" aria-label="{{ _('Call Hatla2ee tow truck') }}">
+        <span class="repair-btn-icon" aria-hidden="true">🚛</span>
+        {{ _("Call Tow Truck") }}
+        <span class="tow-sub">Hatla2ee — 01276192726</span>
+      </a>
+    </div>
+
+    <!-- ── Geolocation Results Panel ── -->
+    <div id="geoPanel" class="geo-panel" aria-live="polite">
+
+      <!-- Loading state -->
+      <div id="geoLoading" class="geo-state" style="display:none;">
+        <div class="geo-state-inner">
+          <div class="spinner"></div>
+          <h3>{{ _("Searching nearby repair shops…") }}</h3>
+          <p>{{ _("This may take a few seconds") }}</p>
+        </div>
+      </div>
+
+      <!-- Error state -->
+      <div id="geoError" class="geo-state geo-state-error" style="display:none;">
+        <span class="geo-state-icon" aria-hidden="true">📡</span>
+        <h3 id="geoErrorTitle">{{ _("Location unavailable") }}</h3>
+        <p id="geoErrorMsg">{{ _("Please allow location access and try again.") }}</p>
+      </div>
+
+      <!-- Results -->
+      <div id="geoResults" style="display:none;">
+        <div class="shops-header">
+          <h2>{{ _("Nearby repair shops") }}</h2>
+          <span id="shopCount" class="detection-count">0</span>
+        </div>
+        <div id="shopsList" class="shops-grid"></div>
+        <p class="shops-attribution">
+          {{ _("Data from") }} <a href="https://www.openstreetmap.org" target="_blank" rel="noopener">OpenStreetMap</a>
+          {{ _("contributors") }}
+        </p>
+      </div>
+
+    </div>
+
+    <!-- ── Informational Cards ── -->
+    <section class="info-section" aria-labelledby="info-heading">
+      <div class="section-divider">
+        <h2 class="section-divider-label" id="info-heading">{{ _("Helpful Guidance") }}</h2>
+        <span class="section-divider-line" aria-hidden="true"></span>
+      </div>
+
+      <div class="info-grid">
+
+        <!-- Card 1 -->
+        <article class="info-card info-card-warning">
+          <div class="info-card-header">
+            <span class="info-card-icon" aria-hidden="true">⚠️</span>
+            <h3>{{ _("When a Warning Light Appears") }}</h3>
+          </div>
+          <ol class="steps-list">
+            <li>{{ _("Stay calm — don't panic or swerve suddenly.") }}</li>
+            <li>{{ _("Check if the light is red (stop now) or amber (check soon).") }}</li>
+            <li>{{ _("Pull over safely if the light is red or flashing.") }}</li>
+            <li>{{ _("Turn off the engine if you see overheating or oil pressure warnings.") }}</li>
+            <li>{{ _("Call for roadside assistance rather than driving on.") }}</li>
+          </ol>
+        </article>
+
+        <!-- Card 2 -->
+        <article class="info-card info-card-teal">
+          <div class="info-card-header">
+            <span class="info-card-icon" aria-hidden="true">🔧</span>
+            <h3>{{ _("Describing the Problem to a Mechanic") }}</h3>
+          </div>
+          <ul class="tips-list">
+            <li>{{ _("Note the exact warning light name (use Dashly AI to identify it).") }}</li>
+            <li>{{ _("Mention when it first appeared and how often it comes on.") }}</li>
+            <li>{{ _("Describe any unusual sounds, smells, or changes in driving behaviour.") }}</li>
+            <li>{{ _("State your vehicle make, model, year, and approximate mileage.") }}</li>
+            <li>{{ _("Tell them whether any recent work was done on the car.") }}</li>
+          </ul>
+        </article>
+
+        <!-- Card 3 -->
+        <article class="info-card info-card-critical">
+          <div class="info-card-header">
+            <span class="info-card-icon" aria-hidden="true">🚨</span>
+            <h3>{{ _("Emergency Safety Tips") }}</h3>
+          </div>
+          <ul class="tips-list">
+            <li>{{ _("Turn on hazard lights as soon as you pull over.") }}</li>
+            <li>{{ _("Move the car as far off the road as possible.") }}</li>
+            <li>{{ _("Place a warning triangle 50–100 m behind the car if safe.") }}</li>
+            <li>{{ _("Stay inside the car on a fast road; exit if there is a fire risk.") }}</li>
+            <li>{{ _("Never attempt to fix electrical or brake faults yourself at the roadside.") }}</li>
+          </ul>
+        </article>
+
+        <!-- Card 4 -->
+        <article class="info-card info-card-navy">
+          <div class="info-card-header">
+            <span class="info-card-icon" aria-hidden="true">🚦</span>
+            <h3>{{ _("Understanding Warning Light Colours") }}</h3>
+          </div>
+          <div class="colour-guide">
+            <div class="colour-row colour-red">
+              <span class="colour-dot" aria-hidden="true"></span>
+              <div>
+                <strong>{{ _("Red") }}</strong>
+                <p>{{ _("Serious risk — stop the car safely as soon as possible.") }}</p>
+              </div>
+            </div>
+            <div class="colour-row colour-amber">
+              <span class="colour-dot" aria-hidden="true"></span>
+              <div>
+                <strong>{{ _("Amber / Yellow") }}</strong>
+                <p>{{ _("Caution — have it checked at a garage soon.") }}</p>
+              </div>
+            </div>
+            <div class="colour-row colour-green">
+              <span class="colour-dot" aria-hidden="true"></span>
+              <div>
+                <strong>{{ _("Green / Blue") }}</strong>
+                <p>{{ _("Informational — a system is active, no immediate action needed.") }}</p>
+              </div>
+            </div>
+          </div>
+        </article>
+
+        <!-- Card 5 -->
+        <article class="info-card info-card-teal">
+          <div class="info-card-header">
+            <span class="info-card-icon" aria-hidden="true">🛡️</span>
+            <h3>{{ _("Choosing a Trustworthy Mechanic") }}</h3>
+          </div>
+          <ul class="tips-list">
+            <li>{{ _("Look for certified or authorised service centres for your car brand.") }}</li>
+            <li>{{ _("Ask for a written estimate before any work begins.") }}</li>
+            <li>{{ _("Request the old parts back after replacement.") }}</li>
+            <li>{{ _("Check online reviews before visiting an unfamiliar workshop.") }}</li>
+            <li>{{ _("Get a second opinion for major or expensive repairs.") }}</li>
+          </ul>
+        </article>
+
+        <!-- Card 6 -->
+        <article class="info-card info-card-navy">
+          <div class="info-card-header">
+            <span class="info-card-icon" aria-hidden="true">🧰</span>
+            <h3>{{ _("Roadside Kit Checklist") }}</h3>
+          </div>
+          <ul class="tips-list">
+            <li>{{ _("Warning triangle and reflective vest") }}</li>
+            <li>{{ _("Jumper cables or a portable jump starter") }}</li>
+            <li>{{ _("Tyre inflator or spare tyre with jack") }}</li>
+            <li>{{ _("Torch and spare batteries") }}</li>
+            <li>{{ _("First aid kit") }}</li>
+            <li>{{ _("Emergency contact numbers written on paper") }}</li>
+          </ul>
+        </article>
+
+      </div>
+    </section>
+
+  </div>
+</div>
+
+<script>
+/* ── Haversine distance (km) ──────────────────────────────── */
+function haversine(lat1, lon1, lat2, lon2) {
+  const R = 6371;
+  const dLat = (lat2 - lat1) * Math.PI / 180;
+  const dLon = (lon2 - lon1) * Math.PI / 180;
+  const a = Math.sin(dLat / 2) ** 2 +
+            Math.cos(lat1 * Math.PI / 180) * Math.cos(lat2 * Math.PI / 180) *
+            Math.sin(dLon / 2) ** 2;
+  return R * 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+}
+
+/* ── Build shop card HTML ─────────────────────────────────── */
+function buildShopCard(shop) {
+  const dist = shop.distance < 1
+    ? (shop.distance * 1000).toFixed(0) + ' m'
+    : shop.distance.toFixed(1) + ' km';
+
+  const name    = shop.name    ? `<h3 class="shop-name">${shop.name}</h3>` : '<h3 class="shop-name shop-name-unknown">{{ _("Unnamed repair shop") }}</h3>';
+  const address = shop.address ? `<p class="shop-detail"><span class="shop-detail-icon">📍</span>${shop.address}</p>` : '';
+  const phone   = shop.phone   ? `<a href="tel:${shop.phone}" class="shop-detail shop-phone"><span class="shop-detail-icon">📞</span>${shop.phone}</a>` : '';
+  const mapsUrl = `https://www.google.com/maps/search/?api=1&query=${shop.lat},${shop.lon}`;
+
+  return `
+    <article class="shop-card">
+      <div class="shop-card-top">
+        ${name}
+        <span class="shop-distance">${dist}</span>
+      </div>
+      ${address}
+      ${phone}
+      <a href="${mapsUrl}" target="_blank" rel="noopener" class="btn btn-outline-teal btn-sm shop-map-btn">
+        {{ _("Open in Maps") }} ↗
+      </a>
+    </article>`;
+}
+
+/* ── Query Overpass API ───────────────────────────────────── */
+async function queryOverpass(lat, lon) {
+  const radius = 5000;
+  const query = `
+    [out:json][timeout:25];
+    (
+      node["shop"="car_repair"](around:${radius},${lat},${lon});
+      way["shop"="car_repair"](around:${radius},${lat},${lon});
+      node["craft"="car_repair"](around:${radius},${lat},${lon});
+      node["amenity"="car_repair"](around:${radius},${lat},${lon});
+      node["shop"="tyres"](around:${radius},${lat},${lon});
+    );
+    out body;
+    >;
+    out skel qt;
+  `;
+  const url = 'https://overpass-api.de/api/interpreter';
+  const resp = await fetch(url, {
+    method: 'POST',
+    body: 'data=' + encodeURIComponent(query),
+    headers: { 'Content-Type': 'application/x-www-form-urlencoded' }
+  });
+  if (!resp.ok) throw new Error('Overpass API error: ' + resp.status);
+  return resp.json();
+}
+
+/* ── Parse Overpass elements into shop objects ─────────────── */
+function parseShops(elements, userLat, userLon) {
+  return elements
+    .filter(el => el.type === 'node' && el.tags)
+    .map(el => {
+      const t = el.tags;
+      const addrParts = [t['addr:street'], t['addr:housenumber'], t['addr:city']].filter(Boolean);
+      return {
+        name:     t.name || '',
+        address:  addrParts.join(', '),
+        phone:    t.phone || t['contact:phone'] || t['contact:mobile'] || '',
+        lat:      el.lat,
+        lon:      el.lon,
+        distance: haversine(userLat, userLon, el.lat, el.lon),
+      };
+    })
+    .sort((a, b) => a.distance - b.distance);
+}
+
+/* ── Main geolocation handler ─────────────────────────────── */
+function findNearMe() {
+  const panel   = document.getElementById('geoPanel');
+  const loading = document.getElementById('geoLoading');
+  const error   = document.getElementById('geoError');
+  const results = document.getElementById('geoResults');
+  const btn     = document.getElementById('findNearMeBtn');
+
+  panel.style.display = 'block';
+  loading.style.display = 'flex';
+  error.style.display   = 'none';
+  results.style.display = 'none';
+  btn.disabled = true;
+
+  panel.scrollIntoView({ behavior: 'smooth', block: 'start' });
+
+  if (!navigator.geolocation) {
+    loading.style.display = 'none';
+    error.style.display   = 'flex';
+    document.getElementById('geoErrorTitle').textContent = '{{ _("Geolocation not supported") }}';
+    document.getElementById('geoErrorMsg').textContent   = '{{ _("Your browser does not support location services.") }}';
+    btn.disabled = false;
+    return;
+  }
+
+  navigator.geolocation.getCurrentPosition(
+    async function (pos) {
+      const lat = pos.coords.latitude;
+      const lon = pos.coords.longitude;
+      try {
+        const data  = await queryOverpass(lat, lon);
+        const shops = parseShops(data.elements || [], lat, lon);
+
+        loading.style.display = 'none';
+
+        if (shops.length === 0) {
+          error.style.display = 'flex';
+          document.getElementById('geoErrorTitle').textContent = '{{ _("No shops found nearby") }}';
+          document.getElementById('geoErrorMsg').textContent   = '{{ _("No car repair shops were found within 5 km. Try calling a tow truck.") }}';
+        } else {
+          document.getElementById('shopCount').textContent = shops.length;
+          document.getElementById('shopsList').innerHTML   = shops.map(buildShopCard).join('');
+          results.style.display = 'block';
+        }
+      } catch (err) {
+        loading.style.display = 'none';
+        error.style.display   = 'flex';
+        document.getElementById('geoErrorTitle').textContent = '{{ _("Search failed") }}';
+        document.getElementById('geoErrorMsg').textContent   = '{{ _("Could not fetch nearby shops. Please check your connection.") }}';
+      }
+      btn.disabled = false;
+    },
+    function (err) {
+      loading.style.display = 'none';
+      btn.disabled = false;
+      if (err.code === 1) {
+        // Permission denied — browser already showed its own dialog, just reset silently.
+        panel.style.display = 'none';
+        return;
+      }
+      error.style.display = 'flex';
+      const msgs = {
+        2: '{{ _("Your location could not be determined. Try again.") }}',
+        3: '{{ _("Location request timed out. Try again.") }}',
+      };
+      document.getElementById('geoErrorTitle').textContent = '{{ _("Location unavailable") }}';
+      document.getElementById('geoErrorMsg').textContent   = msgs[err.code] || '{{ _("An unknown error occurred.") }}';
+    },
+    { timeout: 10000, maximumAge: 60000 }
+  );
+}
+</script>
+
+{% endblock %}

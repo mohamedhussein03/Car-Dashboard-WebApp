@@ -1,6 +1,7 @@
+import os
 from pathlib import Path
 
-from flask import Blueprint, current_app, render_template, request, session, redirect
+from flask import Blueprint, current_app, jsonify, render_template, request, session, redirect
 from werkzeug.utils import secure_filename
 
 from app.services.detector import run_detection, save_annotated_image
@@ -24,16 +25,9 @@ def allowed_file(filename):
 
 def run_detection_pipeline(saved_path, filename, preprocessing_result=None, bypass_warning=None):
     try:
-        print("run_detection_pipeline started", flush=True)
-        print("Detection image path:", saved_path, flush=True)
-
-        print("Starting model detection", flush=True)
         detections = run_detection(str(saved_path))
-        print("Detection complete", flush=True)
-        print("Detections count:", len(detections), flush=True)
 
         if not detections:
-            print("No detections found", flush=True)
             return render_template(
                 "results.html",
                 status="accepted",
@@ -46,20 +40,15 @@ def run_detection_pipeline(saved_path, filename, preprocessing_result=None, bypa
                 retry_image_filename=None,
             )
 
-        print("Attaching messages to detections", flush=True)
         detections = attach_messages_to_detections(detections)
-        print("Messages attached", flush=True)
 
         upload_folder = Path(current_app.config["UPLOAD_FOLDER"])
         annotated_filename = generate_output_filename(filename, prefix="annotated")
         annotated_path = upload_folder / annotated_filename
 
-        print("Saving annotated image to:", annotated_path, flush=True)
         save_annotated_image(saved_path, detections, annotated_path)
-        print("Annotated image saved", flush=True)
 
         annotated_image_url = f"/static/uploads/{annotated_filename}"
-        print("Rendering detected results page", flush=True)
 
         return render_template(
             "results.html",
@@ -74,7 +63,6 @@ def run_detection_pipeline(saved_path, filename, preprocessing_result=None, bypa
         )
 
     except Exception as e:
-        print("run_detection_pipeline error:", repr(e), flush=True)
         return render_template(
             "results.html",
             status="error",
@@ -109,10 +97,7 @@ def detect_page():
     if request.method == "GET":
         return render_template("detect.html")
 
-    print("POST /detect reached", flush=True)
-
     if "image" not in request.files:
-        print("No image in request.files", flush=True)
         return render_template(
             "results.html",
             status="error",
@@ -126,10 +111,8 @@ def detect_page():
         )
 
     file = request.files["image"]
-    print("Uploaded filename:", file.filename, flush=True)
 
     if file.filename == "":
-        print("Empty filename received", flush=True)
         return render_template(
             "results.html",
             status="error",
@@ -143,7 +126,6 @@ def detect_page():
         )
 
     if not allowed_file(file.filename):
-        print("Unsupported file type", flush=True)
         return render_template(
             "results.html",
             status="error",
@@ -168,16 +150,10 @@ def detect_page():
     saved_path = upload_folder / filename
     file.save(saved_path)
 
-    print("Image saved at:", saved_path, flush=True)
-    print("Starting preprocessing", flush=True)
-
     preprocessing_result = run_preprocessing(str(saved_path))
-    print("Preprocessing result:", preprocessing_result, flush=True)
-
     image_url = f"/static/uploads/{filename}"
 
     if not preprocessing_result["passed"]:
-        print("Image rejected by preprocessing", flush=True)
         return render_template(
             "results.html",
             status="rejected",
@@ -189,8 +165,6 @@ def detect_page():
             show_detect_anyway=True,
             retry_image_filename=filename,
         )
-
-    print("Passing to detection pipeline", flush=True)
 
     return run_detection_pipeline(
         saved_path=saved_path,
@@ -257,6 +231,87 @@ def library_page():
         supported_icons=supported_icons,
         further_icons=further_icons,
     )
+
+
+@main.route("/find-repair")
+def find_repair_page():
+    return render_template("find_repair.html")
+
+
+_DASHLY_SYSTEM_PROMPT = """
+You are Dashly, a casual and friendly AI mechanic assistant.
+You specialise exclusively in car dashboard warning lights and vehicle issues.
+
+Personality: speak like a knowledgeable friend who happens to be a mechanic — clear,
+practical, and reassuring. Avoid unnecessary jargon; explain any technical terms you use.
+
+What you help with:
+- Explaining what dashboard warning lights mean and their severity
+- Step-by-step repair guides for common car problems
+- When a problem is safe to DIY vs when to see a professional mechanic
+- Rough cost ranges for repairs (never exact prices — always give a range)
+- Safety warnings and when to stop driving immediately
+- Emergency roadside advice
+
+Rules:
+- Stay focused on car dashboard warnings and automotive topics only.
+- If asked about anything unrelated, politely redirect to car questions.
+- Always lead with safety when a warning could be dangerous.
+- Use bullet points or numbered steps when giving instructions.
+- When uncertain about severity, advise consulting a mechanic in person.
+- Keep responses concise but complete — avoid very long walls of text.
+""".strip()
+
+
+@main.route("/chatbot", methods=["GET", "POST"])
+def chatbot_page():
+    if request.method == "GET":
+        return render_template("chatbot.html")
+
+    data = request.get_json(silent=True)
+    if not data:
+        return jsonify({"error": "Invalid request body."}), 400
+
+    user_message = (data.get("message") or "").strip()
+    history = data.get("history") or []
+
+    if not user_message:
+        return jsonify({"error": "Message cannot be empty."}), 400
+
+    api_key = os.getenv("GEMINI_API_KEY", "")
+    if not api_key:
+        return jsonify({"error": "Chatbot is not configured (missing API key)."}), 503
+
+    try:
+        from google import genai
+        from google.genai import types
+
+        client = genai.Client(api_key=api_key)
+
+        # Build the contents list: prior history + current user message
+        contents = []
+        for msg in history:
+            role = "model" if msg["role"] == "assistant" else "user"
+            contents.append(
+                types.Content(role=role, parts=[types.Part(text=msg["content"])])
+            )
+        contents.append(
+            types.Content(role="user", parts=[types.Part(text=user_message)])
+        )
+
+        response = client.models.generate_content(
+            model="models/gemini-2.5-flash-lite",
+            contents=contents,
+            config=types.GenerateContentConfig(
+                system_instruction=_DASHLY_SYSTEM_PROMPT,
+            ),
+        )
+
+        return jsonify({"response": response.text})
+
+    except Exception:
+        return jsonify({"error": "Failed to get a response. Please try again."}), 500
+
 
 
 @main.route("/results")

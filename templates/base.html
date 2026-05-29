@@ -31,6 +31,14 @@
          class="nav-link {% if request.endpoint == 'main.library_page' %}active{% endif %}">
         {{ _("Library") }}
       </a>
+      <a href="{{ url_for('main.find_repair_page') }}"
+         class="nav-link {% if request.endpoint == 'main.find_repair_page' %}active{% endif %}">
+        {{ _("Find Repair") }}
+      </a>
+      <a href="{{ url_for('main.chatbot_page') }}"
+         class="nav-link nav-link-dashly {% if request.endpoint == 'main.chatbot_page' %}active{% endif %}">
+        ✦ {{ _("Ask Dashly") }}
+      </a>
     </div>
 
     <div class="navbar-end">

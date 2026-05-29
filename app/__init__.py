@@ -3,6 +3,7 @@ from flask import render_template
 from flask import session
 from flask_babel import Babel
 from ultralytics import YOLO
+from dotenv import load_dotenv
 
 from config import (
     BASE_DIR,
@@ -13,6 +14,12 @@ from config import (
     TEMPLATES_DIR,
     UPLOAD_FOLDER,
 )
+
+# Load environment variables from a.env (or .env as fallback)
+for _env_file in (BASE_DIR / "a.env", BASE_DIR / ".env"):
+    if _env_file.exists():
+        load_dotenv(_env_file)
+        break
 
 
 babel = Babel()
